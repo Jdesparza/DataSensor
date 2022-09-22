@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="100dp"
+    android:layout_height="110dp"
+    app:cardBackgroundColor="#FFDBC7"
+    app:cardCornerRadius="7dp"
+    app:cardElevation="3dp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
+        <ImageView
+            android:id="@+id/gv_item_sensor_iv"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginVertical="15dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/logo"
+            />
+
+        <TextView
+            android:id="@+id/gv_item_sensor_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:text="Magnetómetro"
+            android:gravity="center"
+            android:paddingHorizontal="5dp"
+            />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

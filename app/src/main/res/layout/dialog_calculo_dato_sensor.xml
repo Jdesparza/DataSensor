@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:padding="20dp">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_dialog_dato_sensor_container"
+        android:background="@drawable/dialog_radius"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btn_close_dialog_calculo_dato_sensor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/red_oscuro"
+            android:paddingRight="25dp"
+            android:layout_marginRight="-5dp"
+            android:layout_marginTop="-8dp"
+            android:src="@drawable/ic_close"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_title_dialog_dato_sensor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:paddingHorizontal="10dp"
+            android:text="Título"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            app:layout_constraintTop_toBottomOf="@+id/btn_close_dialog_calculo_dato_sensor" />
+
+        <TextView
+            android:id="@+id/tv_subtitle_dialog_dato_sensor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="15dp"
+            android:paddingTop="3dp"
+            android:gravity="center"
+            android:layout_marginBottom="40dp"
+            android:justificationMode="inter_word"
+            android:text="Subtítulo"
+            android:textAllCaps="false"
+            android:textColor="@color/gris_medio"
+            android:textSize="12sp"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_dialog_dato_sensor"
+            />
+
+        <TextView
+            android:id="@+id/tv_mensaje_dialog_dato_sensor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="5dp"
+            android:paddingHorizontal="15dp"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:layout_marginBottom="40dp"
+            android:justificationMode="inter_word"
+            android:text="Mensaje"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_subtitle_dialog_dato_sensor"
+            />
+        />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/btn_iniciar_dialog_calculo_dato_sensor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="10dp"
+        android:backgroundTint="@color/amarrillo_claro"
+        android:enabled="true"
+        android:text="Iniciar Cálculo"
+        android:visibility="visible"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:cornerRadius="100dp"
+        app:layout_constraintBottom_toBottomOf="@id/cl_dialog_dato_sensor_container"
+        app:layout_constraintEnd_toStartOf="@+id/btn_cargar_dialog_calculo_dato_sensor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_dialog_dato_sensor_container" />
+
+    <Button
+        android:id="@+id/btn_cargar_dialog_calculo_dato_sensor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="40dp"
+        android:backgroundTint="@color/gris_medio"
+        android:enabled="false"
+        android:textAllCaps="false"
+        android:text="Cargar"
+        android:visibility="visible"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:cornerRadius="100dp"
+        app:layout_constraintBottom_toBottomOf="@id/cl_dialog_dato_sensor_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_iniciar_dialog_calculo_dato_sensor"
+        app:layout_constraintTop_toBottomOf="@id/cl_dialog_dato_sensor_container" />
+
+    <LinearLayout
+        android:id="@+id/ll_tiempo_dialog_calculo_dato_sensor"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/dialog_radius"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:paddingVertical="20dp"
+            android:textSize="25sp"
+            android:textStyle="italic"
+            android:text="Tiempo" />
+
+        <TextView
+            android:id="@+id/tv_tiempo_dialog_calculo_dato_sensor"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/black"
+            android:textSize="40sp"
+            android:gravity="center"
+            android:text="0" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

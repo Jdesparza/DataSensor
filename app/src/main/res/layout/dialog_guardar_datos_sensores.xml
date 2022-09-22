@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="30dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout_dialog_guardar_datos_sensor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:maxHeight="450dp"
+        android:minHeight="320dp"
+        android:background="@drawable/dialog_radius"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <TextView
+            android:id="@+id/tv_dialog_title_GD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:gravity="center"
+            android:text="Guardando\nDatos"
+            android:letterSpacing="0.05"
+            android:lineSpacingExtra="10dp"
+            android:paddingVertical="20dp"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            app:layout_constraintTop_toTopOf="@+id/constraintLayout_dialog_guardar_datos_sensor" />
+
+        <ProgressBar
+            android:id="@+id/pb_dialog_progreso_GD"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:indeterminateTint="@color/partSup"
+            app:layout_constraintBottom_toTopOf="@+id/tv_dialog_subtitle_GD"
+            app:layout_constraintTop_toBottomOf="@+id/tv_dialog_title_GD" />
+
+        <TextView
+            android:id="@+id/tv_dialog_subtitle_GD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Error de Conexión..."
+            android:padding="10dp"
+            android:textColor="@color/gris_medio"
+            android:textSize="16sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout_dialog_guardar_datos_sensor" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

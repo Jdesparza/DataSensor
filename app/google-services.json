@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "105599389294",
+    "project_id": "datasensor-30005",
+    "storage_bucket": "datasensor-30005.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105599389294:android:5991a5efa1f59e4c9ce07f",
+        "android_client_info": {
+          "package_name": "com.example.datasensor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "105599389294-pt6218hohutak4md1lurl6rllqhvjf87.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2jXB_j2d29P43eYHhef9ZRVeqOjO1T1c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "105599389294-pt6218hohutak4md1lurl6rllqhvjf87.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
