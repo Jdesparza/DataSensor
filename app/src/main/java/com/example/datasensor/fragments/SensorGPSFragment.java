@@ -56,10 +56,7 @@ public class SensorGPSFragment extends Fragment {
     private Button btn_resultados_gps;
     private ResultadosFragment resultadosFragment = new ResultadosFragment();
 
-    private CheckBox cb_gps_latitud, cb_gps_altitud,
-            cb_gps_precision, cb_gps_longitud, cb_gps_velocidad;
-    private CheckedTextView ctv_gps_calculo_1;
-    private CheckedTextView ctv_gps_calculo_2;
+    private CheckedTextView ctv_gps_calculo_1, ctv_gps_calculo_2;
 
     private LocationManager locationManager;
     private LocationListener locationListener;
@@ -106,11 +103,7 @@ public class SensorGPSFragment extends Fragment {
         //Sensor Title DB
         sensorDB = "sensorGPS";
 
-        cb_gps_latitud = view.findViewById(R.id.cb_gps_latitud);
-        cb_gps_altitud = view.findViewById(R.id.cb_gps_altitud);
-        cb_gps_precision = view.findViewById(R.id.cb_gps_precision);
-        cb_gps_longitud = view.findViewById(R.id.cb_gps_longitud);
-        cb_gps_velocidad = view.findViewById(R.id.cb_gps_velocidad);
+        //Checkbox
         ctv_gps_calculo_1 = view.findViewById(R.id.ctv_gps_calculo_1);
         ctv_gps_calculo_2 = view.findViewById(R.id.ctv_gps_calculo_2);
 
@@ -119,6 +112,9 @@ public class SensorGPSFragment extends Fragment {
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             ActivarGPSDialog();
         }
+
+        // Btn resultados
+        btn_resultados_gps = view.findViewById(R.id.btn_resultados_gps);
 
         final Handler handler= new Handler();
         handler.postDelayed(new Runnable() {
@@ -129,8 +125,6 @@ public class SensorGPSFragment extends Fragment {
             }
         },500);
 
-        // Btn resultados
-        btn_resultados_gps = view.findViewById(R.id.btn_resultados_gps);
         btn_resultados_gps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,26 +178,21 @@ public class SensorGPSFragment extends Fragment {
         Log.i("Sensor", location_gps.getProvider());
         doc.put("proveedor", location_gps.getProvider());
 
-        if (cb_gps_latitud.isChecked()) {
-            calculo.put("latitud", location_gps.getLatitude());
-            Log.e("Latitud", location_gps.getLatitude() + " º");
-        }
-        if (cb_gps_longitud.isChecked()) {
-            calculo.put("longitud", location_gps.getLongitude());
-            Log.e("Longitud", location_gps.getLongitude() + " º");
-        }
-        if (cb_gps_altitud.isChecked()) {
-            calculo.put("altitud", location_gps.getAltitude());
-            Log.e("Altitud", location_gps.getAltitude() + " m");
-        }
-        if (cb_gps_velocidad.isChecked()) {
-            calculo.put("velocidad", location_gps.getSpeed());
-            Log.e("Velocidad", location_gps.getSpeed() + " m/s");
-        }
-        if (cb_gps_precision.isChecked()) {
-            calculo.put("precision", location_gps.getAccuracy());
-            Log.e("Precisión", location_gps.getAccuracy() + " m");
-        }
+        calculo.put("latitud", location_gps.getLatitude());
+        Log.e("Latitud", location_gps.getLatitude() + " º");
+
+        calculo.put("longitud", location_gps.getLongitude());
+        Log.e("Longitud", location_gps.getLongitude() + " º");
+
+        calculo.put("altitud", location_gps.getAltitude());
+        Log.e("Altitud", location_gps.getAltitude() + " m");
+
+        calculo.put("velocidad", location_gps.getSpeed());
+        Log.e("Velocidad", location_gps.getSpeed() + " m/s");
+
+        calculo.put("precision", location_gps.getAccuracy());
+        Log.e("Precisión", location_gps.getAccuracy() + " m");
+
         doc.put(key, calculo);
     }
 
@@ -274,22 +263,6 @@ public class SensorGPSFragment extends Fragment {
     }
 
     private void HabilitarDesabilitarBotonResult() {
-        if (
-                (cb_gps_latitud.isChecked() || cb_gps_longitud.isChecked() ||
-                        cb_gps_velocidad.isChecked() || cb_gps_precision.isChecked() ||
-                        cb_gps_altitud.isChecked()) &&
-                        (!ctv_gps_calculo_1.isEnabled() && !ctv_gps_calculo_2.isEnabled())
-        ) {
-            CTVHabilitados();
-        } else if (
-                (!cb_gps_latitud.isChecked() && !cb_gps_longitud.isChecked() &&
-                        !cb_gps_velocidad.isChecked() && !cb_gps_precision.isChecked() &&
-                        !cb_gps_altitud.isChecked()) &&
-                        (ctv_gps_calculo_1.isEnabled() && ctv_gps_calculo_2.isEnabled())
-        ) {
-            CTVDeshabilitados();
-        }
-
         ctv_gps_calculo_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

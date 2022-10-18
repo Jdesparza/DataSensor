@@ -123,6 +123,8 @@ public class ResultadosFragment extends Fragment {
 
         if (nombre.equals("Microfono")) {
             nombre = "Micrófono";
+        } else if (nombre.equals("Camara")) {
+            nombre = "Cámara";
         }
         tv_title_sensor_result.setText(nombre);
 
@@ -134,7 +136,8 @@ public class ResultadosFragment extends Fragment {
                         !mapDOC1.getKey().toString().equals("calSonido_1") && !mapDOC1.getKey().toString().equals("calSonido_2") &&
                         !mapDOC1.getKey().toString().equals("aceleracion_1") && !mapDOC1.getKey().toString().equals("aceleracion_2") &&
                         !mapDOC1.getKey().toString().equals("rotacion_1") && !mapDOC1.getKey().toString().equals("rotacion_2") &&
-                        !mapDOC1.getKey().toString().equals("magnetismo_1") && !mapDOC1.getKey().toString().equals("magnetismo_2")){
+                        !mapDOC1.getKey().toString().equals("magnetismo_1") && !mapDOC1.getKey().toString().equals("magnetismo_2") &&
+                        !mapDOC1.getKey().toString().equals("camTrasera") && !mapDOC1.getKey().toString().equals("camFrontal")){
                     claveString = mapDOC1.getKey().toString();
                     if (claveString.equals("resolucion") || claveString.equals("potencia") || (claveString.equals("rangoMax") &&
                             !tipoSensor.replace("sensor", "").equals("Podometro"))) {
@@ -190,6 +193,8 @@ public class ResultadosFragment extends Fragment {
                     claveString = claveString.replace("presion_", "Presión ");
                 else if (claveString.equals("calSonido_1") || claveString.equals("calSonido_2"))
                     claveString = claveString.replace("calSonido_", "Cal. Sonido ");
+                else if (claveString.equals("camFrontal") || claveString.equals("camTrasera"))
+                    claveString = claveString.replace("cam", "Cám. ");
 
                 tituloInfo.add(claveString);
                 resultadoInfo.add("");
@@ -208,6 +213,8 @@ public class ResultadosFragment extends Fragment {
                         claveString = "Precisión";
                     } else if (cal.getKey().toString().equals("max")) {
                         claveString = "Máx";
+                    } else if (cal.getKey().toString().equals("resolucion")) {
+                        claveString = "Resolución (MP)";
                     } else {
                         claveString = cal.getKey().toString().substring(0, 1).toUpperCase(Locale.ROOT) +
                                 cal.getKey().toString().substring(1).toLowerCase(Locale.ROOT);

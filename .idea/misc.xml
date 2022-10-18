@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/drawable/img_view_radius_conexion_red.xml" value="0.1725" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/activity_splash.xml" value="0.17527173913043478" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/dialog_calculo_dato_sensor.xml" value="0.25" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/dialog_guardar_datos_sensores.xml" value="0.17527173913043478" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/dialog_registrar_sensores_smartphone.xml" value="0.22" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/dialog_sin_conexion_red.xml" value="0.33" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/fragment_resultados.xml" value="0.17527173913043478" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/fragment_sensor_camara.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/fragment_sensor_g_p_s.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/fragment_sensor_microfono.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/fragment_sensor_proximidad.xml" value="0.17527173913043478" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/gv_item_sensorsmartphone.xml" value="0.17527173913043478" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/rv_item_informacion_resultados.xml" value="0.17527173913043478" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

@@ -68,7 +68,7 @@ public class SensorMicrofonoFragment extends Fragment {
 
     private AudioRecord audioRecord;
     int frecuencia = 8000;
-    int channelConfiguration = AudioFormat.CHANNEL_IN_DEFAULT;
+    int channelConfiguration = AudioFormat.CHANNEL_IN_MONO;
     int audioEncoding = AudioFormat.ENCODING_PCM_16BIT;
     int bufferSize = AudioRecord.getMinBufferSize(frecuencia, channelConfiguration, audioEncoding);
     boolean isGetVoiceRun = false;
@@ -497,10 +497,6 @@ public class SensorMicrofonoFragment extends Fragment {
             HashMap<String, Serializable> sonido_1 = new HashMap<String, Serializable>();
             if (Objects.equals(canalMicro, String.valueOf(AudioFormat.CHANNEL_IN_MONO))) {
                 canalMicro = "mono";
-            } else if (Objects.equals(canalMicro, String.valueOf(AudioFormat.CHANNEL_IN_STEREO))) {
-                canalMicro = "stereo";
-            } else {
-                canalMicro = "default";
             }
             sonido_1.put("canal", canalMicro);
             sonido_1.put("max", decibelMax);
