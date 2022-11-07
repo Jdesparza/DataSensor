@@ -88,11 +88,10 @@ public class ResultadosFragment extends Fragment {
         recyclerView = view.findViewById(R.id.rv_info_results);
         recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
 
+        ActualizarImgV();
         ActualizarDatos();
         ItemInformacion_Resultados_RV_Adapter adapter = new ItemInformacion_Resultados_RV_Adapter(tituloInfo, resultadoInfo);
         recyclerView.setAdapter(adapter);
-
-        ActualizarImgV();
 
         btn_aceptar_regresar_sensores.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +107,9 @@ public class ResultadosFragment extends Fragment {
         String nombre = "";
         String claveString = "";
         String valorString = "";
+        DecimalFormat df = new DecimalFormat("#.######");
+        df.setRoundingMode(RoundingMode.DOWN);
+        //Log.e("p", df.format(d));
         TreeMap<String, Serializable> docSort = new TreeMap<>(doc);
         Map<String, Serializable> docTemp = new HashMap<String, Serializable>();
         docTemp.putAll(docSort);
@@ -139,7 +141,9 @@ public class ResultadosFragment extends Fragment {
                         !mapDOC1.getKey().toString().equals("magnetismo_1") && !mapDOC1.getKey().toString().equals("magnetismo_2") &&
                         !mapDOC1.getKey().toString().equals("camTrasera") && !mapDOC1.getKey().toString().equals("camFrontal")){
                     claveString = mapDOC1.getKey().toString();
-                    if (claveString.equals("resolucion") || claveString.equals("potencia") || (claveString.equals("rangoMax") &&
+
+                    if (claveString.equals("resolucion") || claveString.equals("potencia")
+                            || claveString.equals("calRitmoCardiaco_1") || claveString.equals("calRitmoCardiaco_2") || (claveString.equals("rangoMax") &&
                             !tipoSensor.replace("sensor", "").equals("Podometro"))) {
                         valorString = String.valueOf(new BigDecimal(mapDOC1.getValue().toString()).setScale(5, RoundingMode.UP));
                     } else {
@@ -160,6 +164,8 @@ public class ResultadosFragment extends Fragment {
                         claveString = claveString.replace("temperatura_", "Temperatura ");
                     } else if (claveString.equals("calPasos_10") || claveString.equals("calPasos_15")) {
                         claveString = claveString.replace("calPasos_", "Cal. Pasos ");
+                    } else if (claveString.equals("calRitmoCardiaco_1") || claveString.equals("calRitmoCardiaco_2")) {
+                        claveString = claveString.replace("calRitmoCardiaco_", "Ritmo Cardíaco ");
                     } else {
                         claveString = mapDOC1.getKey().toString().substring(0, 1).toUpperCase(Locale.ROOT) +
                                 mapDOC1.getKey().toString().substring(1).toLowerCase(Locale.ROOT);
@@ -202,7 +208,8 @@ public class ResultadosFragment extends Fragment {
                 calculo = (Map<String, Serializable>) entry.getValue();
                 for (Map.Entry cal : calculo.entrySet()) {
                     if (!cal.getKey().toString().equals("canal")) {
-                        valorString = String.valueOf(new BigDecimal(cal.getValue().toString()).setScale(6, RoundingMode.UP));
+                        valorString = String.valueOf(new BigDecimal(cal.getValue().toString())
+                                .setScale(5, RoundingMode.DOWN).doubleValue());
                     } else {
                         valorString = cal.getValue().toString();
                     }
@@ -256,16 +263,9 @@ public class ResultadosFragment extends Fragment {
             iv_sensor_result.setImageResource(R.drawable.ic_gps);
         } else if (tipoSensor == "sensorMicrofono") {
             iv_sensor_result.setImageResource(R.drawable.ic_microfono);
-        } else if (tipoSensor == "sensorInfrarrojo") {
-            iv_sensor_result.setImageResource(R.drawable.ic_infrarrojo);
+        } else if (tipoSensor == "sensorRitmoCardiaco") {
+            iv_sensor_result.setImageResource(R.drawable.ic_ritmo_cardiaco);
         }
-    }
-
-    private void replaceFragment(Fragment fragment) {
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
-        //transaction.addToBackStack(null);
-        transaction.commit();
     }
 
 }

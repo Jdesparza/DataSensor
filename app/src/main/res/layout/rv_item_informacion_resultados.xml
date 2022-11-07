@@ -20,7 +20,7 @@
             android:textSize="16.5sp"
             android:textAllCaps="false"
             android:textColor="@color/gris_medio"
-            android:text="TextView" />
+            android:text="Dato" />
 
         <TextView
             android:id="@+id/tv_resultinfo_resultados"
@@ -31,6 +31,6 @@
             android:textSize="16.5sp"
             android:textAllCaps="false"
             android:textColor="@color/gris_medio"
-            android:text="TextView" />
+            android:text="Resultado" />
     </LinearLayout>
 </RelativeLayout>

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -71,14 +72,12 @@ public class RegistrarSensorSmartphoneActivity extends AppCompatActivity {
     private Sensor sensorMagnetometro = null;
     private Sensor sensorPodometro = null;
     private Sensor sensorBarometro = null;
+    private Sensor sensorRitmoCardiaco = null;
 
     // Audio Manager
     private AudioManager audioManager = null;
     private List<MicrophoneInfo> sensorMicrofono = null;
     private AudioDeviceInfo[] sensorMicrofonoDevice = null;
-
-    // IR Manager
-    private ConsumerIrManager consumerIrManager = null;
 
 
     // Sensores Guardado
@@ -93,7 +92,7 @@ public class RegistrarSensorSmartphoneActivity extends AppCompatActivity {
     private HashMap<String, java.io.Serializable> band_sensorGPS = new HashMap<String, java.io.Serializable>();
     private HashMap<String, java.io.Serializable> band_sensorBarometro = new HashMap<String, java.io.Serializable>();
     private HashMap<String, java.io.Serializable> band_sensorMicrofono = new HashMap<String, java.io.Serializable>();
-    private HashMap<String, java.io.Serializable> band_sensorInfrarrojo = new HashMap<String, java.io.Serializable>();
+    private HashMap<String, java.io.Serializable> band_sensorRitmoCardiaco = new HashMap<String, java.io.Serializable>();
 
     //Dialog Progress Horizontal Rigistrar Sensores
     private ProgressBar dialog_progressh_registrarSensor;
@@ -126,7 +125,7 @@ public class RegistrarSensorSmartphoneActivity extends AppCompatActivity {
         toolbar_title.setText("DataSensor");
 
         // Archivo de almacenamiento interno
-        sharedPreferences = getSharedPreferences("ArchivoInfoApp_v1", this.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("ArchivoInfoApp_v1", MODE_PRIVATE);
 
         // Firebase
         db = FirebaseFirestore.getInstance();
@@ -238,6 +237,7 @@ public class RegistrarSensorSmartphoneActivity extends AppCompatActivity {
         }, 1000);
     }
 
+    @SuppressLint("UnsupportedChromeOsCameraSystemFeature")
     private void ExistenSensores() {
         //Registrando
         dialog_tv_cargando_registrarSensor.setText("Registrando...");
@@ -245,17 +245,21 @@ public class RegistrarSensorSmartphoneActivity extends AppCompatActivity {
 
         // Sensor Manager
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+
+        // sensores
         sensorDeProximidad = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-        sensorTermometro = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);//=>
         sensorDeLuz = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         sensorAcelerometro = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorDeGiroscopio = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         sensorMagnetometro = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         sensorPodometro = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         sensorBarometro = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE);
+        sensorRitmoCardiaco = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
+        sensorTermometro = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);//=>
 
         // Audio Manager
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        // Sensor Micrófono
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 sensorMicrofono = audioManager.getMicrophones();
@@ -263,15 +267,11 @@ public class RegistrarSensorSmartphoneActivity extends AppCompatActivity {
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 sensorMicrofonoDevice = audioManager.getDevices(AudioManager.GET_DEVICES_INPUTS);
                 Log.e("Audio", "GET_DEVICES_INPUTS");
-                Log.e("Audio Tamaño", String.valueOf(sensorMicrofonoDevice.length));
-                Log.e("Audio[0]", String.valueOf(sensorMicrofonoDevice[0].getId()));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // IR Manager
-        consumerIrManager = (ConsumerIrManager) getSystemService(CONSUMER_IR_SERVICE);
 
         if(sensorAcelerometro == null){
             Log.e("Acelerometro: ", "No hay Sensor Acelerómetro");
@@ -404,17 +404,10 @@ public class RegistrarSensorSmartphoneActivity extends AppCompatActivity {
         doc.put("sensorGPS", band_sensorGPS);
         valorACargar += 8;
 
-        if(sensorMicrofono == null){
-            if (sensorMicrofonoDevice == null) {
-                Log.e("Micrófono: ", "No hay sensor Micrófono");
-                band_sensorMicrofono.put("isExists", false);
-                editorInfoApp.putBoolean("band_sensorMicrofono", false);
-            }
-            else {
-                Log.d("Micrófono: ", "Hay sensor Micrófono");
-                band_sensorMicrofono.put("isExists", true);
-                editorInfoApp.putBoolean("band_sensorMicrofono", true);
-            }
+        if(sensorMicrofono == null && sensorMicrofonoDevice == null){
+            Log.e("Micrófono: ", "No hay sensor Micrófono");
+            band_sensorMicrofono.put("isExists", false);
+            editorInfoApp.putBoolean("band_sensorMicrofono", false);
         }
         else{
             Log.d("Micrófono: ", "Hay sensor Micrófono");
@@ -424,27 +417,18 @@ public class RegistrarSensorSmartphoneActivity extends AppCompatActivity {
         doc.put("sensorMicrofono", band_sensorMicrofono);
         valorACargar += 8;
 
-        if (consumerIrManager.hasIrEmitter()) {
-            Log.d("Infrarrojo: ", "Hay sensor Infrarrojo");
-            band_sensorInfrarrojo.put("isExists", true);
-            editorInfoApp.putBoolean("band_sensorInfrarrojo", true);
+        if(sensorRitmoCardiaco == null){
+            Log.e("Ritmo cardíaco: ", "No hay sensor Ritmo cardíaco");
+            band_sensorRitmoCardiaco.put("isExists", false);
+            editorInfoApp.putBoolean("band_sensorRitmoCardiaco", false);
         }
-        else {
-            Log.e("Infrarrojo: ", "No hay sensor Infrarrojo");
-            band_sensorInfrarrojo.put("isExists", false);
-            editorInfoApp.putBoolean("band_sensorInfrarrojo", false);
+        else{
+            Log.d("Ritmo cardíaco: ", "Hay sensor Ritmo cardíaco");
+            band_sensorRitmoCardiaco.put("isExists", true);
+            editorInfoApp.putBoolean("band_sensorRitmoCardiaco", true);
         }
-        doc.put("sensorInfrarrojo", band_sensorInfrarrojo);
+        doc.put("sensorRitmoCardiaco", band_sensorRitmoCardiaco);
         valorACargar += 8;
-
-        /**
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            Log.e("Micrófono: ", String.valueOf(sensorMicrofono.size()));
-            for(MicrophoneInfo mic : sensorMicrofono) {
-                Log.e("Micrófono: ", String.valueOf(mic.getId()));
-            }
-        }
-         **/
     }
 
     private boolean IsOnline(Context context) {
@@ -507,7 +491,6 @@ public class RegistrarSensorSmartphoneActivity extends AppCompatActivity {
                         editorInfoApp.putString("IdSmartphone", idSmartphone);
                         editorInfoApp.commit();
                         Log.e("Sensores Registrados", "Correctamente");
-                        Log.e("Array", String.valueOf(doc.get("sensorProximidad")));
                         valorACargar += 4;
                         bolRegistroCompletado = true;
                     }

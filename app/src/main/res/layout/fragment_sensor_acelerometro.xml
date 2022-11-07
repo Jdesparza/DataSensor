@@ -134,7 +134,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 >
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cv_check_acelerometro_calculo_1"
@@ -153,7 +153,7 @@
                         android:background="@color/gris_claro"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="Aceleración 1"
+                        android:text="Dispositivo Vertical"
                         android:enabled="false"
                         android:textColor="@color/gris_oscuro"
                         android:textSize="18sp" />
@@ -175,7 +175,7 @@
                         android:background="@color/gris_claro"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="Aceleración 2"
+                        android:text="Dispositivo Horizontal"
                         android:enabled="false"
                         android:textColor="@color/gris_oscuro"
                         android:textSize="18sp" />

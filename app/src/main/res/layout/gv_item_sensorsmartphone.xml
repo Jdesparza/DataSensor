@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:textSize="13sp"
             android:textColor="@color/black"
-            android:text="Magnetómetro"
+            android:text="Nombre"
             android:gravity="center"
             android:paddingHorizontal="5dp"
             />

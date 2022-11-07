@@ -1,5 +1,6 @@
 package com.example.datasensor.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,7 @@ public class ItemSensor_GV_Adapter extends BaseAdapter {
         return 0;
     }
 
+    @SuppressLint("ViewHolder")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -54,7 +56,8 @@ public class ItemSensor_GV_Adapter extends BaseAdapter {
         }
          **/
 
-        convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.gv_item_sensorsmartphone, parent, false);
+        convertView = LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.gv_item_sensorsmartphone, parent, false);
 
         ImageView imagen_sensor = convertView.findViewById(R.id.gv_item_sensor_iv);
         TextView nombre_sensor = convertView.findViewById(R.id.gv_item_sensor_tv);

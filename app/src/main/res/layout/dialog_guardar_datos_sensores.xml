@@ -47,11 +47,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Error de Conexión..."
+            android:text=""
             android:padding="10dp"
             android:textColor="@color/gris_medio"
             android:textSize="16sp"
-            android:visibility="invisible"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/constraintLayout_dialog_guardar_datos_sensor" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -133,7 +133,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 >
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cv_check_termometro_calculo_1"
@@ -152,7 +152,7 @@
                         android:background="@color/gris_claro"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="Temperatura 1"
+                        android:text="Temperatura en la Mañana"
                         android:enabled="false"
                         android:textColor="@color/gris_oscuro"
                         android:textSize="18sp" />
@@ -174,7 +174,7 @@
                         android:background="@color/gris_claro"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="Temperatura 2"
+                        android:text="Temperatura Medio Día"
                         android:enabled="false"
                         android:textColor="@color/gris_oscuro"
                         android:textSize="18sp" />

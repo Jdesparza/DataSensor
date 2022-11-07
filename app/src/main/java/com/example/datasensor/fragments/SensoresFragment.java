@@ -135,9 +135,9 @@ public class SensoresFragment extends Fragment {
             sensor_nombre.add("Micrófono");
             sensor_imagen.add(R.drawable.ic_microfono);
         }
-        if (sharedPreferences.getBoolean("band_sensorInfrarrojo", false)) {
-            sensor_nombre.add("Infrarrojo");
-            sensor_imagen.add(R.drawable.ic_infrarrojo);
+        if (sharedPreferences.getBoolean("band_sensorRitmoCardiaco", false)) {
+            sensor_nombre.add("Ritmo Cardíaco");
+            sensor_imagen.add(R.drawable.ic_ritmo_cardiaco);
         }
 
         ItemSensor_GV_Adapter itemSensor_gv_adapter = new ItemSensor_GV_Adapter(context, sensor_nombre, sensor_imagen);
@@ -163,17 +163,27 @@ public class SensoresFragment extends Fragment {
                     if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) &&
                             (ContextCompat.checkSelfPermission(context, Manifest.permission.ACTIVITY_RECOGNITION)
                                     != PackageManager.PERMISSION_GRANTED)) {
-                        Log.e("No", "No hay permiso");
+                        Log.e("Permiso", "No hay permiso");
                         ActivityCompat.requestPermissions(getActivity(),
                                 new String[]{Manifest.permission.ACTIVITY_RECOGNITION},
                                 1);
                     } else {
                         ((MainActivity) getActivity()).replaceFragment(new SensorPodometroFragment());
                     }
+                } else if (sensor_nombre.get(position) == "Ritmo Cardíaco") {
+                    if ((ContextCompat.checkSelfPermission(context, Manifest.permission.BODY_SENSORS)
+                                    != PackageManager.PERMISSION_GRANTED)) {
+                        Log.e("Permiso", "No hay permiso");
+                        ActivityCompat.requestPermissions(getActivity(),
+                                new String[]{Manifest.permission.BODY_SENSORS},
+                                1);
+                    } else {
+                        ((MainActivity) getActivity()).replaceFragment(new SensorRitmoCardiacoFragment());
+                    }
                 } else if (sensor_nombre.get(position) == "Cámara") {
                     if ((ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
                             != PackageManager.PERMISSION_GRANTED)) {
-                        Log.e("No", "No hay permiso");
+                        Log.e("Permiso", "No hay permiso");
 
                         ActivityCompat.requestPermissions(getActivity(),
                                 new String[]{Manifest.permission.CAMERA},
@@ -186,7 +196,7 @@ public class SensoresFragment extends Fragment {
                 } else if (sensor_nombre.get(position).equals("GPS")) {
                     if ((ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                                     != PackageManager.PERMISSION_GRANTED)) {
-                        Log.e("No", "No hay permiso");
+                        Log.e("Permiso", "No hay permiso");
 
                         ActivityCompat.requestPermissions(getActivity(),
                                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -197,7 +207,7 @@ public class SensoresFragment extends Fragment {
                 } else if (sensor_nombre.get(position).equals("Micrófono")) {
                     if ((ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO)
                             != PackageManager.PERMISSION_GRANTED)) {
-                        Log.e("No", "No hay permiso");
+                        Log.e("Permiso", "No hay permiso");
 
                         ActivityCompat.requestPermissions(getActivity(),
                                 new String[]{Manifest.permission.RECORD_AUDIO},
@@ -205,8 +215,6 @@ public class SensoresFragment extends Fragment {
                     } else {
                         ((MainActivity) getActivity()).replaceFragment(new SensorMicrofonoFragment());
                     }
-                } else if (sensor_nombre.get(position) == "Infrarrojo") {
-                    ((MainActivity) getActivity()).replaceFragment(new SensorInfrarrojoFragment());
                 } else {
                     Toast.makeText(getContext(), sensor_nombre.get(position), Toast.LENGTH_SHORT).show();
                 }

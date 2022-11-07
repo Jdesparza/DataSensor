@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".fragments.SensorMicrofonoFragment">
+    tools:context=".fragments.SensorRitmoCardiacoFragment">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:paddingBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_resultados_micro"
+        app:layout_constraintBottom_toTopOf="@+id/btn_resultados_ritmoCardiaco"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -47,38 +47,87 @@
                         android:textColor="@color/rosado_medio"
                         android:textSize="20sp" />
 
-                    <CheckBox
-                        android:id="@+id/cb_frecuencia_micro"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:buttonTint="@color/rosado_bajo"
-                        android:checked="false"
-                        android:text="Frecuencia"
-                        android:layout_marginHorizontal="10dp"
-                        android:textColor="@color/black"
-                        android:textSize="17sp" />
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp"
+                        android:paddingBottom="10dp">
 
-                    <CheckBox
-                        android:id="@+id/cb_formato_micro"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="@color/rosado_bajo"
-                        android:checked="false"
-                        android:layout_marginHorizontal="10dp"
-                        android:text="Formato"
-                        android:textColor="@color/black"
-                        android:textSize="17sp" />
-                    <CheckBox
-                        android:id="@+id/cb_decibel_micro"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="@color/rosado_bajo"
-                        android:checked="false"
-                        android:layout_marginHorizontal="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="Medir Sonido"
-                        android:textColor="@color/black"
-                        android:textSize="17sp" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <CheckBox
+                                android:id="@+id/cb_ritmoCardiaco_fabricante"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/rosado_bajo"
+                                android:checked="false"
+                                android:text="Fabricante"
+                                android:textColor="@color/black"
+                                android:textSize="17sp" />
+
+                            <CheckBox
+                                android:id="@+id/cb_ritmoCardiaco_version"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/rosado_bajo"
+                                android:checked="false"
+                                android:text="Versión"
+                                android:textColor="@color/black"
+                                android:textSize="17sp" />
+
+                            <CheckBox
+                                android:id="@+id/cb_ritmoCardiaco_potencia"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/rosado_bajo"
+                                android:checked="false"
+                                android:text="Potencia"
+                                android:textColor="@color/black"
+                                android:textSize="17sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <CheckBox
+                                android:id="@+id/cb_ritmoCardiaco_resolucion"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/rosado_bajo"
+                                android:checked="false"
+                                android:text="Resolución"
+                                android:textColor="@color/black"
+                                android:textSize="17sp" />
+
+                            <CheckBox
+                                android:id="@+id/cb_ritmoCardiaco_max"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/rosado_bajo"
+                                android:checked="false"
+                                android:text="Ritmo Cardíaco Máx"
+                                android:textColor="@color/black"
+                                android:textSize="17sp" />
+
+                            <CheckBox
+                                android:id="@+id/cb_ritmoCardiaco_actual"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/rosado_bajo"
+                                android:text="Ritmo Cardíaco Actual"
+                                android:textColor="@color/black"
+                                android:textSize="17sp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
@@ -89,7 +138,7 @@
                 android:orientation="horizontal"
                 >
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cv_check_micro_calculo_1"
+                    android:id="@+id/cv_check_ritmoCardiaco_calculo_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -99,19 +148,20 @@
                     app:cardCornerRadius="10dp"
                     >
                     <CheckedTextView
-                        android:id="@+id/ctv_micro_calculo_1"
+                        android:id="@+id/ctv_ritmoCardiaco_calculo_1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/gris_claro"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="Cafetería UTPL"
+                        android:text="Al Correr"
+                        android:textAllCaps="false"
                         android:enabled="false"
                         android:textColor="@color/gris_oscuro"
                         android:textSize="18sp" />
                 </androidx.cardview.widget.CardView>
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cv_check_micro_calculo_2"
+                    android:id="@+id/cv_check_ritmoCardiaco_calculo_2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -121,13 +171,14 @@
                     app:cardCornerRadius="10dp"
                     >
                     <CheckedTextView
-                        android:id="@+id/ctv_micro_calculo_2"
+                        android:id="@+id/ctv_ritmoCardiaco_calculo_2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/gris_claro"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="Biblioteca UTPL"
+                        android:text="Al Caminar"
+                        android:textAllCaps="false"
                         android:enabled="false"
                         android:textColor="@color/gris_oscuro"
                         android:textSize="18sp" />
@@ -137,7 +188,7 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/btn_resultados_micro"
+        android:id="@+id/btn_resultados_ritmoCardiaco"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"

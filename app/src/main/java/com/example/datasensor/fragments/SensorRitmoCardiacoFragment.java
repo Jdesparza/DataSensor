@@ -17,7 +17,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -44,34 +43,29 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.w3c.dom.Text;
-
 import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class SensorPodometroFragment extends Fragment implements SensorEventListener {
+public class SensorRitmoCardiacoFragment extends Fragment implements SensorEventListener {
 
-    private Button btn_resultados_podometro;
-    private ResultadosFragment resultadosFragment = new ResultadosFragment();
+    private Button btn_resultados_ritmoCardiaco;
 
-    private CheckBox cb_podometro_version, cb_podometro_max,
-            cb_podometro_fabricante, cb_podometro_potencia, cb_podometro_resolucion,
-            cb_podometro_actual;
+    private CheckBox cb_ritmoCardiaco_version, cb_ritmoCardiaco_max,
+            cb_ritmoCardiaco_fabricante, cb_ritmoCardiaco_potencia, cb_ritmoCardiaco_resolucion,
+            cb_ritmoCardiaco_actual;
 
 
-    private CheckedTextView ctv_podometro_calculo_1, ctv_podometro_calculo_2;
+    private CheckedTextView ctv_ritmoCardiaco_calculo_1, ctv_ritmoCardiaco_calculo_2;
 
     // Sensor
     private SensorManager sensorManager;
-    private Sensor sensorPodometro;
+    private Sensor sensorRitmoCardiaco;
+    private Float countRitmoCardiaco = 0f;
     private int contEvent = 0;
-    private Float countStep = 0f;
-    private Float pasosPrevios = 0f;
 
     private Context context;
     private String dispositivoConInternet;
@@ -84,7 +78,7 @@ public class SensorPodometroFragment extends Fragment implements SensorEventList
     AlertDialog dialogCD;
     String tipoCalculo;
     int contClickCargar = 0;
-    int contTiempo = 0;
+    int contTiempo = 30;
 
     // Dialog Guardar Datos
     AlertDialog dialogGD;
@@ -107,32 +101,32 @@ public class SensorPodometroFragment extends Fragment implements SensorEventList
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_sensor_podometro, container, false);
+        View view = inflater.inflate(R.layout.fragment_sensor_ritmo_cardiaco, container, false);
 
         // Toolbar
         ((MainActivity) getActivity()).BtnRegresarMostrar();
         ((MainActivity) getActivity()).LogoToolbarOcultar();
-        ((MainActivity) getActivity()).TitleToolbar("Sensor Podómetro");
+        ((MainActivity) getActivity()).TitleToolbar("Sensor Ritmo Cardíaco");
 
         //Sensor Title DB
-        sensorDB = "sensorPodometro";
+        sensorDB = "sensorRitmoCardiaco";
 
-        // check Box podometro
-        cb_podometro_version = view.findViewById(R.id.cb_podometro_version);
-        cb_podometro_max = view.findViewById(R.id.cb_podometro_max);
-        cb_podometro_fabricante = view.findViewById(R.id.cb_podometro_fabricante);
-        cb_podometro_potencia = view.findViewById(R.id.cb_podometro_potencia);
-        cb_podometro_resolucion = view.findViewById(R.id.cb_podometro_resolucion);
-        cb_podometro_actual = view.findViewById(R.id.cb_podometro_actual);
-        ctv_podometro_calculo_1 = view.findViewById(R.id.ctv_podometro_calculo_1);
-        ctv_podometro_calculo_2 = view.findViewById(R.id.ctv_podometro_calculo_2);
+        // check Box ritmo cardiaco
+        cb_ritmoCardiaco_version = view.findViewById(R.id.cb_ritmoCardiaco_version);
+        cb_ritmoCardiaco_max = view.findViewById(R.id.cb_ritmoCardiaco_max);
+        cb_ritmoCardiaco_fabricante = view.findViewById(R.id.cb_ritmoCardiaco_fabricante);
+        cb_ritmoCardiaco_potencia = view.findViewById(R.id.cb_ritmoCardiaco_potencia);
+        cb_ritmoCardiaco_resolucion = view.findViewById(R.id.cb_ritmoCardiaco_resolucion);
+        cb_ritmoCardiaco_actual = view.findViewById(R.id.cb_ritmoCardiaco_actual);
+        ctv_ritmoCardiaco_calculo_1 = view.findViewById(R.id.ctv_ritmoCardiaco_calculo_1);
+        ctv_ritmoCardiaco_calculo_2 = view.findViewById(R.id.ctv_ritmoCardiaco_calculo_2);
 
         // Sensor
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-        sensorPodometro = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        sensorRitmoCardiaco = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
 
         // boton Registrar
-        btn_resultados_podometro = view.findViewById(R.id.btn_resultados_podometro);
+        btn_resultados_ritmoCardiaco = view.findViewById(R.id.btn_resultados_ritmoCardiaco);
 
         // Habilitar Calcular Pasos
         final Handler handler= new Handler();
@@ -145,15 +139,12 @@ public class SensorPodometroFragment extends Fragment implements SensorEventList
         },500);
 
 
-        btn_resultados_podometro.setOnClickListener(new View.OnClickListener() {
+        btn_resultados_ritmoCardiaco.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                if (cb_podometro_actual.isChecked() && (ctv_podometro_calculo_1.isChecked() || ctv_podometro_calculo_2.isChecked())) {
+                if (cb_ritmoCardiaco_actual.isChecked() && (ctv_ritmoCardiaco_calculo_1.isChecked() || ctv_ritmoCardiaco_calculo_2.isChecked())) {
                     Log.e("Click", "Con Calculo");
-                    if (ctv_podometro_calculo_1.isChecked()) tipoCalculo = String.valueOf(ctv_podometro_calculo_1.getText());
-                    else if (ctv_podometro_calculo_2.isChecked()) tipoCalculo = String.valueOf(ctv_podometro_calculo_2.getText());
-                    // Iniciar evento
-                    contEvent = 0;
-                    sensorManager.registerListener(SensorPodometroFragment.this, sensorPodometro, SensorManager.SENSOR_DELAY_UI);
+                    if (ctv_ritmoCardiaco_calculo_1.isChecked()) tipoCalculo = String.valueOf(ctv_ritmoCardiaco_calculo_1.getText());
+                    else if (ctv_ritmoCardiaco_calculo_2.isChecked()) tipoCalculo = String.valueOf(ctv_ritmoCardiaco_calculo_2.getText());
 
                     DialogCalcularDato();
                 } else {
@@ -183,85 +174,85 @@ public class SensorPodometroFragment extends Fragment implements SensorEventList
 
     private void HabilitarDesabilitarBotonResult() {
 
-        if (cb_podometro_actual.isChecked() && !ctv_podometro_calculo_1.isEnabled() && !ctv_podometro_calculo_2.isEnabled()) {
+        if (cb_ritmoCardiaco_actual.isChecked() && !ctv_ritmoCardiaco_calculo_1.isEnabled() && !ctv_ritmoCardiaco_calculo_2.isEnabled()) {
             Log.e("if", "1");
-            ctv_podometro_calculo_1.setEnabled(true);
-            ctv_podometro_calculo_1.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
-            ctv_podometro_calculo_1.setTextColor(ContextCompat.getColor(context, R.color.black));
-            ctv_podometro_calculo_2.setEnabled(true);
-            ctv_podometro_calculo_2.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
-            ctv_podometro_calculo_2.setTextColor(ContextCompat.getColor(context, R.color.black));
+            ctv_ritmoCardiaco_calculo_1.setEnabled(true);
+            ctv_ritmoCardiaco_calculo_1.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+            ctv_ritmoCardiaco_calculo_1.setTextColor(ContextCompat.getColor(context, R.color.black));
+            ctv_ritmoCardiaco_calculo_2.setEnabled(true);
+            ctv_ritmoCardiaco_calculo_2.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+            ctv_ritmoCardiaco_calculo_2.setTextColor(ContextCompat.getColor(context, R.color.black));
         }
-        else if (!cb_podometro_actual.isChecked() && ctv_podometro_calculo_1.isEnabled() && ctv_podometro_calculo_2.isEnabled()) {
+        else if (!cb_ritmoCardiaco_actual.isChecked() && ctv_ritmoCardiaco_calculo_1.isEnabled() && ctv_ritmoCardiaco_calculo_2.isEnabled()) {
             Log.e("if", "1-1");
-            ctv_podometro_calculo_1.setEnabled(false);
-            ctv_podometro_calculo_1.setBackgroundColor(ContextCompat.getColor(context, R.color.gris_claro));
-            ctv_podometro_calculo_1.setTextColor(ContextCompat.getColor(context, R.color.gris_oscuro));
-            if (ctv_podometro_calculo_1.isChecked()) ctv_podometro_calculo_1.setChecked(false);
-            ctv_podometro_calculo_2.setEnabled(false);
-            ctv_podometro_calculo_2.setBackgroundColor(ContextCompat.getColor(context, R.color.gris_claro));
-            ctv_podometro_calculo_2.setTextColor(ContextCompat.getColor(context, R.color.gris_oscuro));
-            if (ctv_podometro_calculo_2.isChecked()) ctv_podometro_calculo_2.setChecked(false);
+            ctv_ritmoCardiaco_calculo_1.setEnabled(false);
+            ctv_ritmoCardiaco_calculo_1.setBackgroundColor(ContextCompat.getColor(context, R.color.gris_claro));
+            ctv_ritmoCardiaco_calculo_1.setTextColor(ContextCompat.getColor(context, R.color.gris_oscuro));
+            if (ctv_ritmoCardiaco_calculo_1.isChecked()) ctv_ritmoCardiaco_calculo_1.setChecked(false);
+            ctv_ritmoCardiaco_calculo_2.setEnabled(false);
+            ctv_ritmoCardiaco_calculo_2.setBackgroundColor(ContextCompat.getColor(context, R.color.gris_claro));
+            ctv_ritmoCardiaco_calculo_2.setTextColor(ContextCompat.getColor(context, R.color.gris_oscuro));
+            if (ctv_ritmoCardiaco_calculo_2.isChecked()) ctv_ritmoCardiaco_calculo_2.setChecked(false);
         }
 
         if (
-                (cb_podometro_fabricante.isChecked() || cb_podometro_max.isChecked() ||
-                        cb_podometro_potencia.isChecked() || cb_podometro_resolucion.isChecked() ||
-                        cb_podometro_version.isChecked()) &&
-                        (!cb_podometro_actual.isChecked() && !btn_resultados_podometro.isEnabled())
+                (cb_ritmoCardiaco_fabricante.isChecked() || cb_ritmoCardiaco_max.isChecked() ||
+                        cb_ritmoCardiaco_potencia.isChecked() || cb_ritmoCardiaco_resolucion.isChecked() ||
+                        cb_ritmoCardiaco_version.isChecked()) &&
+                        (!cb_ritmoCardiaco_actual.isChecked() && !btn_resultados_ritmoCardiaco.isEnabled())
         ) {
             Log.e("if", "2");
             BotonHabilitado();
         }
         else if (
-                !cb_podometro_fabricante.isChecked() && !cb_podometro_max.isChecked() &&
-                        !cb_podometro_potencia.isChecked() && !cb_podometro_resolucion.isChecked() &&
-                        !cb_podometro_version.isChecked() && !cb_podometro_actual.isChecked() && btn_resultados_podometro.isEnabled()
+                !cb_ritmoCardiaco_fabricante.isChecked() && !cb_ritmoCardiaco_max.isChecked() &&
+                        !cb_ritmoCardiaco_potencia.isChecked() && !cb_ritmoCardiaco_resolucion.isChecked() &&
+                        !cb_ritmoCardiaco_version.isChecked() && !cb_ritmoCardiaco_actual.isChecked() && btn_resultados_ritmoCardiaco.isEnabled()
         ) {
             Log.e("if", "2-1");
             BotonDeshabilitado();
         }
 
-        ctv_podometro_calculo_1.setOnClickListener(new View.OnClickListener() {
+        ctv_ritmoCardiaco_calculo_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ctv_podometro_calculo_1.isChecked() ) {
-                    ctv_podometro_calculo_1.setChecked(false);
-                    ctv_podometro_calculo_1.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+                if (ctv_ritmoCardiaco_calculo_1.isChecked() ) {
+                    ctv_ritmoCardiaco_calculo_1.setChecked(false);
+                    ctv_ritmoCardiaco_calculo_1.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
                 } else {
-                    ctv_podometro_calculo_1.setChecked(true);
-                    ctv_podometro_calculo_1.setBackgroundColor(Color.parseColor("#A8EA8C"));
-                    if (ctv_podometro_calculo_2.isChecked()) {
-                        ctv_podometro_calculo_2.setChecked(false);
-                        ctv_podometro_calculo_2.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+                    ctv_ritmoCardiaco_calculo_1.setChecked(true);
+                    ctv_ritmoCardiaco_calculo_1.setBackgroundColor(Color.parseColor("#A8EA8C"));
+                    if (ctv_ritmoCardiaco_calculo_2.isChecked()) {
+                        ctv_ritmoCardiaco_calculo_2.setChecked(false);
+                        ctv_ritmoCardiaco_calculo_2.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
                     }
                 }
             }
         });
 
-        ctv_podometro_calculo_2.setOnClickListener(new View.OnClickListener() {
+        ctv_ritmoCardiaco_calculo_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ctv_podometro_calculo_2.isChecked() ) {
-                    ctv_podometro_calculo_2.setChecked(false);
-                    ctv_podometro_calculo_2.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+                if (ctv_ritmoCardiaco_calculo_2.isChecked() ) {
+                    ctv_ritmoCardiaco_calculo_2.setChecked(false);
+                    ctv_ritmoCardiaco_calculo_2.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
                 } else {
-                    ctv_podometro_calculo_2.setChecked(true);
-                    ctv_podometro_calculo_2.setBackgroundColor(Color.parseColor("#A8EA8C"));
-                    if (ctv_podometro_calculo_1.isChecked()) {
-                        ctv_podometro_calculo_1.setChecked(false);
-                        ctv_podometro_calculo_1.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+                    ctv_ritmoCardiaco_calculo_2.setChecked(true);
+                    ctv_ritmoCardiaco_calculo_2.setBackgroundColor(Color.parseColor("#A8EA8C"));
+                    if (ctv_ritmoCardiaco_calculo_1.isChecked()) {
+                        ctv_ritmoCardiaco_calculo_1.setChecked(false);
+                        ctv_ritmoCardiaco_calculo_1.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
                     }
                 }
             }
         });
 
-        if (cb_podometro_actual.isChecked() && (ctv_podometro_calculo_1.isChecked() || ctv_podometro_calculo_2.isChecked()) &&
-                !btn_resultados_podometro.isEnabled()) {
+        if (cb_ritmoCardiaco_actual.isChecked() && (ctv_ritmoCardiaco_calculo_1.isChecked() || ctv_ritmoCardiaco_calculo_2.isChecked()) &&
+                !btn_resultados_ritmoCardiaco.isEnabled()) {
             Log.e("if", "3");
             BotonHabilitado();
-        } else if (cb_podometro_actual.isChecked() && !ctv_podometro_calculo_1.isChecked() && !ctv_podometro_calculo_2.isChecked() &&
-                btn_resultados_podometro.isEnabled()) {
+        } else if (cb_ritmoCardiaco_actual.isChecked() && !ctv_ritmoCardiaco_calculo_1.isChecked() && !ctv_ritmoCardiaco_calculo_2.isChecked() &&
+                btn_resultados_ritmoCardiaco.isEnabled()) {
             Log.e("if", "3-1");
             BotonDeshabilitado();
         }
@@ -269,19 +260,23 @@ public class SensorPodometroFragment extends Fragment implements SensorEventList
     }
     private void BotonHabilitado() {
         Log.e("Boton", "Habilitado");
-        btn_resultados_podometro.setTextColor(ContextCompat.getColor(context, R.color.black));
-        btn_resultados_podometro.setBackgroundColor(ContextCompat.getColor(context, R.color.celeste));
-        btn_resultados_podometro.setEnabled(true);
+        btn_resultados_ritmoCardiaco.setTextColor(ContextCompat.getColor(context, R.color.black));
+        btn_resultados_ritmoCardiaco.setBackgroundColor(ContextCompat.getColor(context, R.color.celeste));
+        btn_resultados_ritmoCardiaco.setEnabled(true);
     }
     private void BotonDeshabilitado() {
         Log.e("Boton", "Deshabilitado");
-        btn_resultados_podometro.setTextColor(ContextCompat.getColor(context, R.color.gris_oscuro));
-        btn_resultados_podometro.setBackgroundColor(ContextCompat.getColor(context, R.color.gris_claro));
-        btn_resultados_podometro.setEnabled(false);
+        btn_resultados_ritmoCardiaco.setTextColor(ContextCompat.getColor(context, R.color.gris_oscuro));
+        btn_resultados_ritmoCardiaco.setBackgroundColor(ContextCompat.getColor(context, R.color.gris_claro));
+        btn_resultados_ritmoCardiaco.setEnabled(false);
     }
 
     @SuppressLint("SetTextI18n")
     private void DialogCalcularDato() {
+        String typeCalString = "";
+        if (ctv_ritmoCardiaco_calculo_1.isChecked()) typeCalString = "correr";
+        else if (ctv_ritmoCardiaco_calculo_2.isChecked()) typeCalString = "caminar";
+
         AlertDialog.Builder builderCD = new AlertDialog.Builder(context);
         LayoutInflater inflaterCD = getActivity().getLayoutInflater();
         View viewCD = inflaterCD.inflate(R.layout.dialog_calculo_dato_sensor, null);
@@ -306,10 +301,11 @@ public class SensorPodometroFragment extends Fragment implements SensorEventList
 
         tv_title_dialog_dato_sensor.setText("Calcular Pasos");
         tv_subtitle_dialog_dato_sensor.setText(tipoCalculo);
-        tv_mensaje_dialog_dato_sensor.setText("Una vez iniciado el cálculo, contarás con 6 " +
-                "segundos para introducir el smartphone en el bolsillo.\n\nEmpieza a caminar luego " +
-                "de escuchar el sonido que se reproducirá al terminar los 6 segundos y deja " +
-                "de caminar al " + tipoCalculo.toLowerCase());
+        tv_mensaje_dialog_dato_sensor.setText("Una vez iniciado el cálculo, se iniciará una cuenta regresiva de 30 " +
+                "segundos, en donde deberás " + typeCalString + ".\nDeja de hacerlo al escuchar el sonido" +
+                " que se reproducirá al pasar los 30 segundos. \n\nComienza a capturar el dato colocando " +
+                "el dedo sobre la parte del sensor, la mayoría de las veces es en donde esta el flash y " +
+                "quita el dedo una vez veas el mensaje de que se capturó el dato y luego procede a dar clic en cargar.");
         btn_close_dialog_calculo_dato_sensor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -320,7 +316,8 @@ public class SensorPodometroFragment extends Fragment implements SensorEventList
                         if (contClickCargar == 1 || contClickCargar > 2) {
                             Toast.makeText(context, "Dar 2 veces click", Toast.LENGTH_SHORT).show();
                         } else if (contClickCargar == 2) {
-                            sensorManager.unregisterListener(SensorPodometroFragment.this);
+                            if (contEvent >= 1) sensorManager.unregisterListener(SensorRitmoCardiacoFragment.this);
+                            contEvent = 0;
                             dialogCD.dismiss();
                         }
                         contClickCargar = 0;
@@ -340,8 +337,7 @@ public class SensorPodometroFragment extends Fragment implements SensorEventList
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        contTiempo++;
-                        if (contTiempo <= 6) {
+                        if (contTiempo >= 1) {
                             if (ll_tiempo_dialog_calculo_dato_sensor.getVisibility() == View.GONE) {
                                 btn_close_dialog_calculo_dato_sensor.setVisibility(View.GONE);
                                 btn_iniciar_dialog_calculo_dato_sensor.setVisibility(View.GONE);
@@ -350,21 +346,40 @@ public class SensorPodometroFragment extends Fragment implements SensorEventList
                             }
                             tv_tiempo_dialog_calculo_dato_sensor.setText(String.valueOf(contTiempo));
                             handler.postDelayed(this,1000);
-                        } else if (contTiempo > 6) {
+                        } else if (contTiempo <= 0) {
                             Sound();
-                            contEvent++;
                             ll_tiempo_dialog_calculo_dato_sensor.setVisibility(View.GONE);
                             btn_close_dialog_calculo_dato_sensor.setVisibility(View.VISIBLE);
                             btn_iniciar_dialog_calculo_dato_sensor.setVisibility(View.VISIBLE);
                             btn_cargar_dialog_calculo_dato_sensor.setVisibility(View.VISIBLE);
+
+                            // Iniciar evento
+                            sensorManager.registerListener(SensorRitmoCardiacoFragment.this, sensorRitmoCardiaco, SensorManager.SENSOR_DELAY_UI);
+                            contEvent = 1;
+
+                            // Habilitar Calcular Pasos
+                            final Handler handler= new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (countRitmoCardiaco > 0.0) {
+                                        Toast.makeText(context, "Dato obtenido", Toast.LENGTH_SHORT).show();
+                                        contEvent = 0;
+                                        sensorManager.unregisterListener(SensorRitmoCardiacoFragment.this);
+                                    } else if (countRitmoCardiaco == 0.0) {
+                                        handler.postDelayed(this,500);
+                                    }
+                                }
+                            },500);
 
                             if (!btn_cargar_dialog_calculo_dato_sensor.isEnabled()) {
                                 btn_cargar_dialog_calculo_dato_sensor.setEnabled(true);
                                 btn_cargar_dialog_calculo_dato_sensor.setBackgroundColor(ContextCompat.getColor(context, R.color.partSup));
                             }
 
-                            contTiempo = 0;
+                            contTiempo = 30;
                         }
+                        contTiempo--;
                     }
                 },1000);
             }
@@ -427,7 +442,7 @@ public class SensorPodometroFragment extends Fragment implements SensorEventList
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                sensorManager.unregisterListener(SensorPodometroFragment.this);
+                                sensorManager.unregisterListener(SensorRitmoCardiacoFragment.this);
                                 dialogGD.dismiss();
                                 Log.e("DialogConexionRed", "mostrarDialogConexionRed");
                                 mostrarDialogConexionRed();
@@ -442,35 +457,35 @@ public class SensorPodometroFragment extends Fragment implements SensorEventList
     }
 
     private void ValidarCheckBoxDatos() {
-        Log.i("Sensor", sensorPodometro.getName());
-        doc.put("nombre", sensorPodometro.getName());
-        if (cb_podometro_fabricante.isChecked()) {
-            doc.put("fabricante", sensorPodometro.getVendor());
-            Log.e("Fabricante", String.valueOf(sensorPodometro.getVendor()));
+        Log.i("Sensor", sensorRitmoCardiaco.getName());
+        doc.put("nombre", sensorRitmoCardiaco.getName());
+        if (cb_ritmoCardiaco_fabricante.isChecked()) {
+            doc.put("fabricante", sensorRitmoCardiaco.getVendor());
+            Log.e("Fabricante", String.valueOf(sensorRitmoCardiaco.getVendor()));
         }
-        if (cb_podometro_version.isChecked()) {
-            doc.put("version", sensorPodometro.getVersion());
-            Log.e("Versión", String.valueOf(sensorPodometro.getVersion()));
+        if (cb_ritmoCardiaco_version.isChecked()) {
+            doc.put("version", sensorRitmoCardiaco.getVersion());
+            Log.e("Versión", String.valueOf(sensorRitmoCardiaco.getVersion()));
         }
-        if (cb_podometro_potencia.isChecked()) {
-            doc.put("potencia", sensorPodometro.getPower());
-            Log.e("Potencia", sensorPodometro.getPower() + " mA");
+        if (cb_ritmoCardiaco_potencia.isChecked()) {
+            doc.put("potencia", sensorRitmoCardiaco.getPower());
+            Log.e("Potencia", sensorRitmoCardiaco.getPower() + " mA");
         }
-        if (cb_podometro_resolucion.isChecked()) {
-            doc.put("resolucion", sensorPodometro.getResolution());
-            Log.e("Resolución", String.valueOf(sensorPodometro.getResolution()));
+        if (cb_ritmoCardiaco_resolucion.isChecked()) {
+            doc.put("resolucion", sensorRitmoCardiaco.getResolution());
+            Log.e("Resolución", String.valueOf(sensorRitmoCardiaco.getResolution()));
         }
-        if (cb_podometro_max.isChecked()) {
-            doc.put("rangoMax", sensorPodometro.getMaximumRange());
-            Log.e("Máx", String.valueOf(sensorPodometro.getMaximumRange()));
+        if (cb_ritmoCardiaco_max.isChecked()) {
+            doc.put("rangoMax", sensorRitmoCardiaco.getMaximumRange());
+            Log.e("Máx", String.valueOf(sensorRitmoCardiaco.getMaximumRange()));
         }
-        if (ctv_podometro_calculo_1.isChecked()) {
-            doc.put("calPasos_10", countStep);
-            Log.e("calPasos_10", String.valueOf(countStep));
+        if (ctv_ritmoCardiaco_calculo_1.isChecked()) {
+            doc.put("calRitmoCardiaco_1", countRitmoCardiaco);
+            Log.e("calRitmoCardiaco_1", String.valueOf(countRitmoCardiaco));
         }
-        if (ctv_podometro_calculo_2.isChecked()) {
-            doc.put("calPasos_15", countStep);
-            Log.e("calPasos_15", String.valueOf(countStep));
+        if (ctv_ritmoCardiaco_calculo_2.isChecked()) {
+            doc.put("calRitmoCardiaco_2", countRitmoCardiaco);
+            Log.e("calRitmoCardiaco_2", String.valueOf(countRitmoCardiaco));
         }
     }
 
@@ -491,8 +506,6 @@ public class SensorPodometroFragment extends Fragment implements SensorEventList
     }
 
     private void UpdateDB() {
-        sensorManager.unregisterListener(SensorPodometroFragment.this);
-
         Log.e("DOCResultsAEnviar1", String.valueOf(docIsRegister));
         for (Map.Entry entry : docIsRegister.entrySet()) {
             if ((doc.containsKey(entry.getKey().toString())) &&
@@ -604,14 +617,10 @@ public class SensorPodometroFragment extends Fragment implements SensorEventList
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        Log.e("SensorEvent", String.valueOf(event.sensor));
-        if (contEvent == 0) {
-            pasosPrevios = event.values[0];
-            Log.e("Ingreso", "Ingreso Nuevo Al Activity");
-        } else if (contEvent == 1) {
-            Log.e("Ingreso", "Listo para contar pasos");
-            countStep = event.values[0] - pasosPrevios;
-            Log.e("Pasos", String.valueOf(countStep));
+        if (event.values[0] > 0.0 && contEvent == 1) {
+            countRitmoCardiaco = event.values[0];
+            Log.e("Ritmo Cardíaco", String.valueOf(countRitmoCardiaco));
+            contEvent++;
         }
     }
 
@@ -629,4 +638,5 @@ public class SensorPodometroFragment extends Fragment implements SensorEventList
             return null;
         }
     }
+
 }

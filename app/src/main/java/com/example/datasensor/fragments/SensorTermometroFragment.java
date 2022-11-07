@@ -336,17 +336,13 @@ public class SensorTermometroFragment extends Fragment implements SensorEventLis
             doc.put("rangoMax", sensorTermometro.getMaximumRange());
             Log.e("Máx", sensorTermometro.getMaximumRange() + " °C");
         }
-        if (cb_termometro_actual.isChecked()) {
-            doc.put("registrado", temperaturaEncontrada);
-            Log.e("Temperatura Encontrada", String.valueOf(temperaturaEncontrada));
-        }
         if (ctv_termometro_calculo_1.isChecked()) {
             doc.put("temperatura_1", temperaturaEncontrada);
             Log.e("temperatura_1", String.valueOf(temperaturaEncontrada));
         }
         if (ctv_termometro_calculo_2.isChecked()) {
             doc.put("temperatura_2", temperaturaEncontrada);
-            Log.e("temperatura_1", String.valueOf(temperaturaEncontrada));
+            Log.e("temperatura_2", String.valueOf(temperaturaEncontrada));
         }
     }
 

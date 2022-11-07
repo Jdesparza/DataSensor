@@ -6,16 +6,25 @@
         <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/drawable/img_view_radius_conexion_red.xml" value="0.1725" />
         <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/activity_splash.xml" value="0.17527173913043478" />
         <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/dialog_calculo_dato_sensor.xml" value="0.25" />
-        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/dialog_guardar_datos_sensores.xml" value="0.17527173913043478" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/dialog_guardar_datos_sensores.xml" value="0.25" />
         <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/dialog_registrar_sensores_smartphone.xml" value="0.22" />
         <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/dialog_sin_conexion_red.xml" value="0.33" />
-        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/fragment_resultados.xml" value="0.17527173913043478" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/fragment_resultados.xml" value="0.25" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/fragment_sensor_acelerometro.xml" value="0.25" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/fragment_sensor_barometro.xml" value="0.21" />
         <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/fragment_sensor_camara.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/fragment_sensor_g_p_s.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/fragment_sensor_giroscopio.xml" value="0.25" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/fragment_sensor_luz.xml" value="0.1716485507246377" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/fragment_sensor_magnetometro.xml" value="0.1716485507246377" />
         <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/fragment_sensor_microfono.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/fragment_sensor_podometro.xml" value="0.1716485507246377" />
         <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/fragment_sensor_proximidad.xml" value="0.17527173913043478" />
-        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/gv_item_sensorsmartphone.xml" value="0.17527173913043478" />
-        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/rv_item_informacion_resultados.xml" value="0.17527173913043478" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/fragment_sensor_ritmo_cardiaco.xml" value="0.25" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/fragment_sensor_termometro.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/fragment_sensores.xml" value="0.25" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/gv_item_sensorsmartphone.xml" value="0.67" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/rv_item_informacion_resultados.xml" value="0.33" />
       </map>
     </option>
   </component>

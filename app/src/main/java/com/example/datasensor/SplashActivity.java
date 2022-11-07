@@ -53,7 +53,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        sharedPreferences = getSharedPreferences("ArchivoInfoApp_v1", this.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("ArchivoInfoApp_v1", MODE_PRIVATE);
         idSmartphone = sharedPreferences.getString("IdSmartphone", "No hay modelo");
 
         tv_cargando_splash = findViewById(R.id.tv_cargando_splash);
@@ -111,9 +111,8 @@ public class SplashActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        //Log.e("ComprobarBD", document.getId() + " => " + document.getData());
+
                         Log.e("ComprobarBD", "existe");
-                        Log.e("AndroidID", idSmartphone);
 
                         SharedPreferences.Editor editorInfoApp = sharedPreferences.edit();
 
@@ -140,8 +139,8 @@ public class SplashActivity extends AppCompatActivity {
                                 (Boolean) ((HashMap) document.getData().get("sensorGPS")).get("isExists"));
                         editorInfoApp.putBoolean("band_sensorMicrofono",
                                 (Boolean) ((HashMap) document.getData().get("sensorMicrofono")).get("isExists"));
-                        editorInfoApp.putBoolean("band_sensorInfrarrojo",
-                                (Boolean) ((HashMap) document.getData().get("sensorInfrarrojo")).get("isExists"));
+                        editorInfoApp.putBoolean("band_sensorRitmoCardiaco",
+                                (Boolean) ((HashMap) document.getData().get("sensorRitmoCardiaco")).get("isExists"));
 
 
                         editorInfoApp.commit();
