@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -96,10 +97,8 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();
             } else if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
                 onBackPressed();
-                Log.e("Regresar", "1");
             } else if (getSupportFragmentManager().getBackStackEntryCount() == 2) {
                 FragResultadosBackPressed();
-                Log.e("Regresar", "2");
             }
 
 
@@ -123,10 +122,8 @@ public class MainActivity extends AppCompatActivity {
                 stopHandlers = true;
                 if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
                     onBackPressed();
-                    Log.e("Regresar", "1");
                 } else if (getSupportFragmentManager().getBackStackEntryCount() == 2) {
                     FragResultadosBackPressed();
-                    Log.e("Regresar", "2");
                 }
             }
         });
@@ -168,8 +165,29 @@ public class MainActivity extends AppCompatActivity {
         onBackPressed();
     }
 
-    public Boolean PararHandlers() {
-        return stopHandlers;
+    public void mostrarDialogConexionRed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        LayoutInflater inflater = getLayoutInflater();
+
+        View view = inflater.inflate(R.layout.dialog_sin_conexion_red, null);
+
+        builder.setView(view);
+        builder.setCancelable(false);
+
+        AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+        dialog.show();
+
+        Button btn_wifi_error = view.findViewById(R.id.dialog_btn_wifi_error);
+        btn_wifi_error.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 
 }

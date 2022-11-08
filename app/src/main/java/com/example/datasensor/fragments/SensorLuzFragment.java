@@ -86,12 +86,6 @@ public class SensorLuzFragment extends Fragment implements SensorEventListener {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        //sensorManager.unregisterListener(this);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -139,7 +133,6 @@ public class SensorLuzFragment extends Fragment implements SensorEventListener {
 
                     GuardarDatos();
                 } else {
-                    Log.e("Click", "Sin Calculo");
                     GuardarDatos();
                 }
             }
@@ -166,7 +159,6 @@ public class SensorLuzFragment extends Fragment implements SensorEventListener {
     private void HabilitarDesabilitarBotonResult() {
 
         if (cb_luz_actual.isChecked() && !ctv_luz_calculo_1.isEnabled() && !ctv_luz_calculo_2.isEnabled()) {
-            Log.e("if", "1");
             ctv_luz_calculo_1.setEnabled(true);
             ctv_luz_calculo_1.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
             ctv_luz_calculo_1.setTextColor(ContextCompat.getColor(context, R.color.black));
@@ -175,7 +167,6 @@ public class SensorLuzFragment extends Fragment implements SensorEventListener {
             ctv_luz_calculo_2.setTextColor(ContextCompat.getColor(context, R.color.black));
         }
         else if (!cb_luz_actual.isChecked() && ctv_luz_calculo_1.isEnabled() && ctv_luz_calculo_2.isEnabled()) {
-            Log.e("if", "1-1");
             ctv_luz_calculo_1.setEnabled(false);
             ctv_luz_calculo_1.setBackgroundColor(ContextCompat.getColor(context, R.color.gris_claro));
             ctv_luz_calculo_1.setTextColor(ContextCompat.getColor(context, R.color.gris_oscuro));
@@ -192,7 +183,6 @@ public class SensorLuzFragment extends Fragment implements SensorEventListener {
                         cb_luz_version.isChecked()) &&
                         (!cb_luz_actual.isChecked() && !btn_resultados_luz.isEnabled())
         ) {
-            Log.e("if", "2");
             BotonHabilitado();
         }
         else if (
@@ -200,7 +190,6 @@ public class SensorLuzFragment extends Fragment implements SensorEventListener {
                         !cb_luz_potencia.isChecked() && !cb_luz_resolucion.isChecked() &&
                         !cb_luz_version.isChecked() && !cb_luz_actual.isChecked() && btn_resultados_luz.isEnabled()
         ) {
-            Log.e("if", "2-1");
             BotonDeshabilitado();
         }
 
@@ -240,23 +229,19 @@ public class SensorLuzFragment extends Fragment implements SensorEventListener {
 
         if (cb_luz_actual.isChecked() && (ctv_luz_calculo_1.isChecked() || ctv_luz_calculo_2.isChecked()) &&
                 !btn_resultados_luz.isEnabled()) {
-            Log.e("if", "3");
             BotonHabilitado();
         } else if (cb_luz_actual.isChecked() && !ctv_luz_calculo_1.isChecked() && !ctv_luz_calculo_2.isChecked() &&
                 btn_resultados_luz.isEnabled()) {
-            Log.e("if", "3-1");
             BotonDeshabilitado();
         }
 
     }
     private void BotonHabilitado() {
-        Log.e("Boton", "Habilitado");
         btn_resultados_luz.setTextColor(ContextCompat.getColor(context, R.color.black));
         btn_resultados_luz.setBackgroundColor(ContextCompat.getColor(context, R.color.celeste));
         btn_resultados_luz.setEnabled(true);
     }
     private void BotonDeshabilitado() {
-        Log.e("Boton", "Deshabilitado");
         btn_resultados_luz.setTextColor(ContextCompat.getColor(context, R.color.gris_oscuro));
         btn_resultados_luz.setBackgroundColor(ContextCompat.getColor(context, R.color.gris_claro));
         btn_resultados_luz.setEnabled(false);
@@ -291,7 +276,6 @@ public class SensorLuzFragment extends Fragment implements SensorEventListener {
                     if (dispositivoConInternet.equals("ConInternet")) {
                         tv_dialog_subtitle_GD.setVisibility(View.INVISIBLE);
 
-                        //doc.put("isExists", true);
                         ValidarCheckBoxDatos();
                         IsRegisterDB();
 
@@ -302,8 +286,7 @@ public class SensorLuzFragment extends Fragment implements SensorEventListener {
                             public void run() {
                                 sensorManager.unregisterListener(SensorLuzFragment.this);
                                 dialogGD.dismiss();
-                                Log.e("DialogConexionRed", "mostrarDialogConexionRed");
-                                mostrarDialogConexionRed();
+                                ((MainActivity) getActivity()).mostrarDialogConexionRed();
                             }
                         }, 600);
                     }
@@ -390,13 +373,11 @@ public class SensorLuzFragment extends Fragment implements SensorEventListener {
         Log.e("DOCResultsAEnviar2", String.valueOf(docIsRegister));
 
         if (isModificado) {
-            Log.e("Modificado", String.valueOf(isModificado));
             documentReference.update(sensorDB, docIsRegister)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
                             dialogGD.dismiss();
-                            Log.e("Datos", "Actualizados");
                             ((MainActivity) getActivity()).replaceFragmentResultados(sensorDB, docIsRegister);
                         }
                     })
@@ -407,7 +388,6 @@ public class SensorLuzFragment extends Fragment implements SensorEventListener {
                         }
                     });
         } else {
-            Log.e("Modificado", String.valueOf(isModificado));
             dialogGD.dismiss();
             ((MainActivity) getActivity()).replaceFragmentResultados(sensorDB, docIsRegister);
         }
@@ -419,53 +399,15 @@ public class SensorLuzFragment extends Fragment implements SensorEventListener {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
-        try {
-            if ((networkInfo != null) && (networkInfo.isAvailable()) && (networkInfo.isConnected())) {
-                HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.google.com/").openConnection());
-                urlc.setRequestProperty("User-Agent", "Test");
-                urlc.setRequestProperty("Connection", "close");
-                urlc.setConnectTimeout(500);
-                urlc.connect();
-                dispositivoConInternet = "ConInternet";
-                bandIsOnline = true;
-            } else {
-                dispositivoConInternet = "SinInternet";
-                bandIsOnline = false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if ((networkInfo != null) && (networkInfo.isAvailable()) && (networkInfo.isConnected())) {
+            dispositivoConInternet = "ConInternet";
+            bandIsOnline = true;
+        } else {
             dispositivoConInternet = "SinInternet";
             bandIsOnline = false;
         }
 
-        Log.e("Conexión", dispositivoConInternet);
-
         return bandIsOnline;
-    }
-
-    private void mostrarDialogConexionRed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-        LayoutInflater inflater = getLayoutInflater();
-
-        View view = inflater.inflate(R.layout.dialog_sin_conexion_red, null);
-
-        builder.setView(view);
-        builder.setCancelable(false);
-
-        AlertDialog dialog = builder.create();
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        }
-        dialog.show();
-
-        Button btn_wifi_error = view.findViewById(R.id.dialog_btn_wifi_error);
-        btn_wifi_error.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
     }
 
     @Override

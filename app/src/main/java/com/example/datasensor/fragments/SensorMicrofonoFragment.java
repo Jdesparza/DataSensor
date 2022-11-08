@@ -117,7 +117,7 @@ public class SensorMicrofonoFragment extends Fragment {
         //Sensor Title DB
         sensorDB = "sensorMicrofono";
 
-        // check Box podometro
+        // check Box microfono
         cb_frecuencia_micro = view.findViewById(R.id.cb_frecuencia_micro);
         cb_formato_micro = view.findViewById(R.id.cb_formato_micro);
         cb_decibel_micro = view.findViewById(R.id.cb_decibel_micro);
@@ -142,13 +142,11 @@ public class SensorMicrofonoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (cb_decibel_micro.isChecked() && (ctv_micro_calculo_1.isChecked() || ctv_micro_calculo_2.isChecked())) {
-                    Log.e("Click", "Con Calculo");
                     if (ctv_micro_calculo_1.isChecked()) tipoCalculo = String.valueOf(ctv_micro_calculo_1.getText());
                     else if (ctv_micro_calculo_2.isChecked()) tipoCalculo = String.valueOf(ctv_micro_calculo_2.getText());
 
                     DialogCalcularDato();
                 } else {
-                    Log.e("Click", "Sin Calculo");
                     GuardarDatos();
                 }
             }
@@ -160,7 +158,6 @@ public class SensorMicrofonoFragment extends Fragment {
     private void HabilitarDesabilitarBotonResult() {
 
         if (cb_decibel_micro.isChecked() && !ctv_micro_calculo_1.isEnabled() && !ctv_micro_calculo_2.isEnabled()) {
-            Log.e("if", "1");
             ctv_micro_calculo_1.setEnabled(true);
             ctv_micro_calculo_1.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
             ctv_micro_calculo_1.setTextColor(ContextCompat.getColor(context, R.color.black));
@@ -169,7 +166,6 @@ public class SensorMicrofonoFragment extends Fragment {
             ctv_micro_calculo_2.setTextColor(ContextCompat.getColor(context, R.color.black));
         }
         else if (!cb_decibel_micro.isChecked() && ctv_micro_calculo_1.isEnabled() && ctv_micro_calculo_2.isEnabled()) {
-            Log.e("if", "1-1");
             ctv_micro_calculo_1.setEnabled(false);
             ctv_micro_calculo_1.setBackgroundColor(ContextCompat.getColor(context, R.color.gris_claro));
             ctv_micro_calculo_1.setTextColor(ContextCompat.getColor(context, R.color.gris_oscuro));
@@ -237,13 +233,11 @@ public class SensorMicrofonoFragment extends Fragment {
 
     }
     private void BotonHabilitado() {
-        Log.e("Boton", "Habilitado");
         btn_resultados_micro.setTextColor(ContextCompat.getColor(context, R.color.black));
         btn_resultados_micro.setBackgroundColor(ContextCompat.getColor(context, R.color.celeste));
         btn_resultados_micro.setEnabled(true);
     }
     private void BotonDeshabilitado() {
-        Log.e("Boton", "Deshabilitado");
         btn_resultados_micro.setTextColor(ContextCompat.getColor(context, R.color.gris_oscuro));
         btn_resultados_micro.setBackgroundColor(ContextCompat.getColor(context, R.color.gris_claro));
         btn_resultados_micro.setEnabled(false);
@@ -373,7 +367,6 @@ public class SensorMicrofonoFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         documentReference = db.collection("SensoresSmartphones").document(idSmartphone);
 
-        Log.e("Canall", canalMicro);
         DialogGuardarDatos();
     }
 
@@ -406,7 +399,6 @@ public class SensorMicrofonoFragment extends Fragment {
                     if (dispositivoConInternet.equals("ConInternet")) {
                         tv_dialog_subtitle_GD.setVisibility(View.INVISIBLE);
 
-                        //doc.put("isExists", true);
                         ValidarCheckBoxDatos();
                         IsRegisterDB();
 
@@ -416,8 +408,7 @@ public class SensorMicrofonoFragment extends Fragment {
                             @Override
                             public void run() {
                                 dialogGD.dismiss();
-                                Log.e("DialogConexionRed", "mostrarDialogConexionRed");
-                                mostrarDialogConexionRed();
+                                ((MainActivity) getActivity()).mostrarDialogConexionRed();
                             }
                         }, 600);
                     }
@@ -434,53 +425,15 @@ public class SensorMicrofonoFragment extends Fragment {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
-        try {
-            if ((networkInfo != null) && (networkInfo.isAvailable()) && (networkInfo.isConnected())) {
-                HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.google.com/").openConnection());
-                urlc.setRequestProperty("User-Agent", "Test");
-                urlc.setRequestProperty("Connection", "close");
-                urlc.setConnectTimeout(500);
-                urlc.connect();
-                dispositivoConInternet = "ConInternet";
-                bandIsOnline = true;
-            } else {
-                dispositivoConInternet = "SinInternet";
-                bandIsOnline = false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if ((networkInfo != null) && (networkInfo.isAvailable()) && (networkInfo.isConnected())) {
+            dispositivoConInternet = "ConInternet";
+            bandIsOnline = true;
+        } else {
             dispositivoConInternet = "SinInternet";
             bandIsOnline = false;
         }
 
-        Log.e("Conexión", dispositivoConInternet);
-
         return bandIsOnline;
-    }
-
-    private void mostrarDialogConexionRed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-        LayoutInflater inflater = getLayoutInflater();
-
-        View view = inflater.inflate(R.layout.dialog_sin_conexion_red, null);
-
-        builder.setView(view);
-        builder.setCancelable(false);
-
-        AlertDialog dialog = builder.create();
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        }
-        dialog.show();
-
-        Button btn_wifi_error = view.findViewById(R.id.dialog_btn_wifi_error);
-        btn_wifi_error.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
     }
 
     private void ValidarCheckBoxDatos() {
@@ -571,13 +524,11 @@ public class SensorMicrofonoFragment extends Fragment {
 
 
         if (isModificado) {
-            Log.e("Modificado", String.valueOf(isModificado));
             documentReference.update(sensorDB, docIsRegister)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
                             dialogGD.dismiss();
-                            Log.e("Datos", "Actualizados");
                             ((MainActivity) getActivity()).replaceFragmentResultados(sensorDB, docIsRegister);
                         }
                     })
@@ -588,7 +539,6 @@ public class SensorMicrofonoFragment extends Fragment {
                         }
                     });
         } else {
-            Log.e("Modificado", String.valueOf(isModificado));
             dialogGD.dismiss();
             ((MainActivity) getActivity()).replaceFragmentResultados(sensorDB, docIsRegister);
         }
@@ -610,15 +560,14 @@ public class SensorMicrofonoFragment extends Fragment {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    //r is the actual length of data read, generally speaking, r will be less than buffersize
+                    // r is the actual length of data read, generally speaking, r will be less than buffersize
                     int r = audioRecord.read(buffer, 0, bufferSize);
-                    //audioRecord.read(buffer, 0, bufferSize);
                     long v = 0;
-                    // Take out the contents of buffer. Do the sum of squares
+                    // Saque el contenido del búfer. Haz la suma de cuadrados
                     for (int i = 0; i <buffer.length; i++) {
                         v += buffer[i] * buffer[i];
                     }
-                    // Divide the sum of squares by the total length of the data to get the volume.
+                    // Divide la suma de los cuadrados por la longitud total de los datos para obtener el volumen.
                     double mean = v / (double) r;
                     double volume = 10 * Math.log10(mean);
                     DecimalFormat df = new DecimalFormat("####.00");
@@ -627,7 +576,6 @@ public class SensorMicrofonoFragment extends Fragment {
                     canalMicro = String.valueOf(audioRecord.getChannelConfiguration());
                     if (volume > decibelMax) decibelMax = volume;
                     if (volume < decibelMin) decibelMin = volume;
-                    // About ten times a second
                     synchronized (mLock) {
                         try {
                             mLock.wait(100);

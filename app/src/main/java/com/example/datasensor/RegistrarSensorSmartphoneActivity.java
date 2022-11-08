@@ -171,21 +171,19 @@ public class RegistrarSensorSmartphoneActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Log.e("IsOnline", Boolean.toString(IsOnline(RegistrarSensorSmartphoneActivity.this)));
                 if (IsOnline(RegistrarSensorSmartphoneActivity.this)) {
 
                     numSerieSmartphone = Build.SERIAL;
                     android_id = Settings.Secure.getString(RegistrarSensorSmartphoneActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-                    //idSmartphone = Build.MODEL + "-" + Build.MANUFACTURER + "-" + UUID.randomUUID().toString();
+                    //ID
                     idSmartphone = Build.MODEL + "-" + android_id + "-" + numSerieSmartphone;
 
                     doc.put("id", idSmartphone);
                     doc.put("modelo", Build.MODEL);
                     doc.put("fabricante", Build.MANUFACTURER);
 
-                    Log.e("InfoSmartphone", "InfoSmartphone");
-                    dialog_tv_cargando_registrarSensor.setText("Buscando Sensores...");
+                   dialog_tv_cargando_registrarSensor.setText("Buscando Sensores...");
 
                     editorInfoApp = sharedPreferences.edit();
                     ExistenSensores();
@@ -199,7 +197,6 @@ public class RegistrarSensorSmartphoneActivity extends AppCompatActivity {
                                 valorCargado++;
                                 dialog_progressh_registrarSensor.setProgress(valorCargado);
                                 dialog_tv_number_progress_registrarSensor.setText(valorCargado + "%");
-                                //Log.e("Progreso", String.valueOf(valorCargado));
                             }
 
                             if (valorCargado < 100 || !bolRegistroCompletado) {
@@ -213,7 +210,6 @@ public class RegistrarSensorSmartphoneActivity extends AppCompatActivity {
                                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                     }
                                 }, 1500);
-                                //Log.e("Vista", "Listo para cargar Home");
                             }
                         }
                     }, 50);
@@ -228,7 +224,6 @@ public class RegistrarSensorSmartphoneActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             dialogRS.dismiss();
-                            Log.e("DialogConexionRed", "mostrarDialogConexionRed");
                             mostrarDialogConexionRed();
                         }
                     }, 600);
@@ -241,7 +236,6 @@ public class RegistrarSensorSmartphoneActivity extends AppCompatActivity {
     private void ExistenSensores() {
         //Registrando
         dialog_tv_cargando_registrarSensor.setText("Registrando...");
-        Log.e("ExistenSensores", "ExistenSensores");
 
         // Sensor Manager
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -263,10 +257,8 @@ public class RegistrarSensorSmartphoneActivity extends AppCompatActivity {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 sensorMicrofono = audioManager.getMicrophones();
-                Log.e("Audio", "getMicrophones");
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 sensorMicrofonoDevice = audioManager.getDevices(AudioManager.GET_DEVICES_INPUTS);
-                Log.e("Audio", "GET_DEVICES_INPUTS");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -282,7 +274,6 @@ public class RegistrarSensorSmartphoneActivity extends AppCompatActivity {
             Log.d("Acelerometro: ", "Hay Sensor Acelerómetro");
             band_sensorDeAcelerometro.put("isExists", true);
             editorInfoApp.putBoolean("band_sensorDeAcelerometro", true);
-            //sensorManager.registerListener((SensorEventListener) this, sensorAcelerometro, SensorManager.SENSOR_DELAY_NORMAL);
         }
         doc.put("sensorAcelerometro", band_sensorDeAcelerometro);
         valorACargar += 8;
@@ -437,22 +428,9 @@ public class RegistrarSensorSmartphoneActivity extends AppCompatActivity {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
-        //dialog_tv_cargando_registrarSensor.setText("Verificando Internet...");
-        try {
-            if ((networkInfo != null) && (networkInfo.isAvailable()) && (networkInfo.isConnected())) {
-                HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.google.com/").openConnection());
-                urlc.setRequestProperty("User-Agent", "Test");
-                urlc.setRequestProperty("Connection", "close");
-                urlc.setConnectTimeout(500);
-                urlc.connect();
-                bandIsOnline = true;
-            } else {
-                bandIsOnline = false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            bandIsOnline = false;
-        }
+        if ((networkInfo != null) && (networkInfo.isAvailable()) && (networkInfo.isConnected())) bandIsOnline = true;
+        else bandIsOnline = false;
+
 
         return bandIsOnline;
     }
@@ -478,7 +456,6 @@ public class RegistrarSensorSmartphoneActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                //finish();
             }
         });
     }
@@ -490,7 +467,6 @@ public class RegistrarSensorSmartphoneActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         editorInfoApp.putString("IdSmartphone", idSmartphone);
                         editorInfoApp.commit();
-                        Log.e("Sensores Registrados", "Correctamente");
                         valorACargar += 4;
                         bolRegistroCompletado = true;
                     }

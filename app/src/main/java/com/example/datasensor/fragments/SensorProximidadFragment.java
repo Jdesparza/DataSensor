@@ -86,12 +86,6 @@ public class SensorProximidadFragment extends Fragment implements SensorEventLis
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        sensorManager.unregisterListener(this);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -159,7 +153,6 @@ public class SensorProximidadFragment extends Fragment implements SensorEventLis
     private void HabilitarDesabilitarBotonResult() {
 
         if (cb_proximidad_actual.isChecked() && !ctv_proximidad_calculo_1.isEnabled() && !ctv_proximidad_calculo_2.isEnabled()) {
-            Log.e("if", "1");
             ctv_proximidad_calculo_1.setEnabled(true);
             ctv_proximidad_calculo_1.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
             ctv_proximidad_calculo_1.setTextColor(ContextCompat.getColor(context, R.color.black));
@@ -168,7 +161,6 @@ public class SensorProximidadFragment extends Fragment implements SensorEventLis
             ctv_proximidad_calculo_2.setTextColor(ContextCompat.getColor(context, R.color.black));
         }
         else if (!cb_proximidad_actual.isChecked() && ctv_proximidad_calculo_1.isEnabled() && ctv_proximidad_calculo_2.isEnabled()) {
-            Log.e("if", "1-1");
             ctv_proximidad_calculo_1.setEnabled(false);
             ctv_proximidad_calculo_1.setBackgroundColor(ContextCompat.getColor(context, R.color.gris_claro));
             ctv_proximidad_calculo_1.setTextColor(ContextCompat.getColor(context, R.color.gris_oscuro));
@@ -185,7 +177,6 @@ public class SensorProximidadFragment extends Fragment implements SensorEventLis
                         cb_proximidad_version.isChecked()) &&
                         (!cb_proximidad_actual.isChecked() && !btn_resultados_proximidad.isEnabled())
         ) {
-            Log.e("if", "2");
             BotonHabilitado();
         }
         else if (
@@ -193,7 +184,6 @@ public class SensorProximidadFragment extends Fragment implements SensorEventLis
                         !cb_proximidad_potencia.isChecked() && !cb_proximidad_resolucion.isChecked() &&
                         !cb_proximidad_version.isChecked() && !cb_proximidad_actual.isChecked() && btn_resultados_proximidad.isEnabled()
         ) {
-            Log.e("if", "2-1");
             BotonDeshabilitado();
         }
 
@@ -233,23 +223,19 @@ public class SensorProximidadFragment extends Fragment implements SensorEventLis
 
         if (cb_proximidad_actual.isChecked() && (ctv_proximidad_calculo_1.isChecked() || ctv_proximidad_calculo_2.isChecked()) &&
                 !btn_resultados_proximidad.isEnabled()) {
-            Log.e("if", "3");
             BotonHabilitado();
         } else if (cb_proximidad_actual.isChecked() && !ctv_proximidad_calculo_1.isChecked() && !ctv_proximidad_calculo_2.isChecked() &&
                 btn_resultados_proximidad.isEnabled()) {
-            Log.e("if", "3-1");
             BotonDeshabilitado();
         }
 
     }
     private void BotonHabilitado() {
-        Log.e("Boton", "Habilitado");
         btn_resultados_proximidad.setTextColor(ContextCompat.getColor(context, R.color.black));
         btn_resultados_proximidad.setBackgroundColor(ContextCompat.getColor(context, R.color.celeste));
         btn_resultados_proximidad.setEnabled(true);
     }
     private void BotonDeshabilitado() {
-        Log.e("Boton", "Deshabilitado");
         btn_resultados_proximidad.setTextColor(ContextCompat.getColor(context, R.color.gris_oscuro));
         btn_resultados_proximidad.setBackgroundColor(ContextCompat.getColor(context, R.color.gris_claro));
         btn_resultados_proximidad.setEnabled(false);
@@ -293,8 +279,7 @@ public class SensorProximidadFragment extends Fragment implements SensorEventLis
                             @Override
                             public void run() {
                                 dialogGD.dismiss();
-                                Log.e("DialogConexionRed", "mostrarDialogConexionRed");
-                                mostrarDialogConexionRed();
+                                ((MainActivity) getActivity()).mostrarDialogConexionRed();
                             }
                         }, 600);
                     }
@@ -336,8 +321,6 @@ public class SensorProximidadFragment extends Fragment implements SensorEventLis
             doc.put("proximidad_2", proximidadEncontrada);
             Log.e("proximidad_2", String.valueOf(proximidadEncontrada));
         }
-
-        Log.e("DOC", String.valueOf(doc));
     }
 
     private void IsRegisterDB() {
@@ -357,6 +340,8 @@ public class SensorProximidadFragment extends Fragment implements SensorEventLis
     }
 
     private void UpdateDB() {
+        sensorManager.unregisterListener(SensorProximidadFragment.this);
+
         Log.e("DOCResultsAEnviar1", String.valueOf(docIsRegister));
         for (Map.Entry entry : docIsRegister.entrySet()) {
             if ((doc.containsKey(entry.getKey().toString())) &&
@@ -381,13 +366,11 @@ public class SensorProximidadFragment extends Fragment implements SensorEventLis
         Log.e("DOCResultsAEnviar2", String.valueOf(docIsRegister));
 
         if (isModificado) {
-            Log.e("Modificado", String.valueOf(isModificado));
             documentReference.update(sensorDB, docIsRegister)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
                             dialogGD.dismiss();
-                            Log.e("Datos", "Actualizados");
                             ((MainActivity) getActivity()).replaceFragmentResultados(sensorDB, docIsRegister);
                         }
                     })
@@ -398,7 +381,6 @@ public class SensorProximidadFragment extends Fragment implements SensorEventLis
                         }
                     });
         } else {
-            Log.e("Modificado", String.valueOf(isModificado));
             dialogGD.dismiss();
             ((MainActivity) getActivity()).replaceFragmentResultados(sensorDB, docIsRegister);
         }
@@ -410,60 +392,21 @@ public class SensorProximidadFragment extends Fragment implements SensorEventLis
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
-        try {
-            if ((networkInfo != null) && (networkInfo.isAvailable()) && (networkInfo.isConnected())) {
-                HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.google.com/").openConnection());
-                urlc.setRequestProperty("User-Agent", "Test");
-                urlc.setRequestProperty("Connection", "close");
-                urlc.setConnectTimeout(500);
-                urlc.connect();
-                dispositivoConInternet = "ConInternet";
-                bandIsOnline = true;
-            } else {
-                dispositivoConInternet = "SinInternet";
-                bandIsOnline = false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if ((networkInfo != null) && (networkInfo.isAvailable()) && (networkInfo.isConnected())) {
+            dispositivoConInternet = "ConInternet";
+            bandIsOnline = true;
+        } else {
             dispositivoConInternet = "SinInternet";
             bandIsOnline = false;
         }
 
-        Log.e("Conexión", dispositivoConInternet);
-
         return bandIsOnline;
-    }
-
-    private void mostrarDialogConexionRed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-        LayoutInflater inflater = getLayoutInflater();
-
-        View view = inflater.inflate(R.layout.dialog_sin_conexion_red, null);
-
-        builder.setView(view);
-        builder.setCancelable(false);
-
-        AlertDialog dialog = builder.create();
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        }
-        dialog.show();
-
-        Button btn_wifi_error = view.findViewById(R.id.dialog_btn_wifi_error);
-        btn_wifi_error.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
     }
 
 
     @Override
     public void onSensorChanged(SensorEvent event) {
         proximidadEncontrada = event.values[0];
-        Log.e("prox", String.valueOf(event.values[0]));
     }
 
     @Override

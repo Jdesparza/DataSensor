@@ -48,13 +48,6 @@ public class SensoresFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     private Context context;
 
-    // Fragment Sensores
-    //private SensorTermometroFragment sensorTermometroFragment = new SensorTermometroFragment();
-    //private SensorProximidadFragment sensorProximidadFragment = new SensorProximidadFragment();
-    //private SensorLuzFragment sensorLuzFragment = new SensorLuzFragment();
-    //private SensorAcelerometroFragment sensorAcelerometroFragment = new SensorAcelerometroFragment();
-    //private SensorGiroscopioFragment sensorGiroscopioFragment = new SensorGiroscopioFragment();
-
     // Sensores Smartphone Grid View
     private GridView gv_sensoresSmartphone;
 
@@ -146,7 +139,6 @@ public class SensoresFragment extends Fragment {
         gv_sensoresSmartphone.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(getContext(), sensor_nombre.get(position), Toast.LENGTH_SHORT).show();
                 if (sensor_nombre.get(position) == "Termómetro") {
                     ((MainActivity) getActivity()).replaceFragment(new SensorTermometroFragment());
                 } else if (sensor_nombre.get(position) == "Proximidad") {

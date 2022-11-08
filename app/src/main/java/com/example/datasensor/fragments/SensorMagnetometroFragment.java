@@ -88,12 +88,6 @@ public class SensorMagnetometroFragment extends Fragment implements SensorEventL
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        //sensorManager.unregisterListener(this);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -138,11 +132,10 @@ public class SensorMagnetometroFragment extends Fragment implements SensorEventL
             public void onClick(View view) {
                 if (cb_magnetometro_actual.isChecked() && (ctv_magnetometro_calculo_1.isChecked() || ctv_magnetometro_calculo_2.isChecked())) {
                     contEvent = 0;
-                    sensorManager.registerListener(SensorMagnetometroFragment.this, sensorMagnetometro, SensorManager.SENSOR_DELAY_NORMAL);
+                    sensorManager.registerListener(SensorMagnetometroFragment.this, sensorMagnetometro, SensorManager.SENSOR_DELAY_UI);
 
                     GuardarDatos();
                 } else {
-                    Log.e("Click", "Sin Calculo");
                     GuardarDatos();
                 }
             }
@@ -169,7 +162,6 @@ public class SensorMagnetometroFragment extends Fragment implements SensorEventL
     private void HabilitarDesabilitarBotonResult() {
 
         if (cb_magnetometro_actual.isChecked() && !ctv_magnetometro_calculo_1.isEnabled() && !ctv_magnetometro_calculo_2.isEnabled()) {
-            Log.e("if", "1");
             ctv_magnetometro_calculo_1.setEnabled(true);
             ctv_magnetometro_calculo_1.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
             ctv_magnetometro_calculo_1.setTextColor(ContextCompat.getColor(context, R.color.black));
@@ -178,7 +170,6 @@ public class SensorMagnetometroFragment extends Fragment implements SensorEventL
             ctv_magnetometro_calculo_2.setTextColor(ContextCompat.getColor(context, R.color.black));
         }
         else if (!cb_magnetometro_actual.isChecked() && ctv_magnetometro_calculo_1.isEnabled() && ctv_magnetometro_calculo_2.isEnabled()) {
-            Log.e("if", "1-1");
             ctv_magnetometro_calculo_1.setEnabled(false);
             ctv_magnetometro_calculo_1.setBackgroundColor(ContextCompat.getColor(context, R.color.gris_claro));
             ctv_magnetometro_calculo_1.setTextColor(ContextCompat.getColor(context, R.color.gris_oscuro));
@@ -195,7 +186,6 @@ public class SensorMagnetometroFragment extends Fragment implements SensorEventL
                         cb_magnetometro_version.isChecked()) &&
                         (!cb_magnetometro_actual.isChecked() && !btn_resultados_magnetometro.isEnabled())
         ) {
-            Log.e("if", "2");
             BotonHabilitado();
         }
         else if (
@@ -203,7 +193,6 @@ public class SensorMagnetometroFragment extends Fragment implements SensorEventL
                         !cb_magnetometro_potencia.isChecked() && !cb_magnetometro_resolucion.isChecked() &&
                         !cb_magnetometro_version.isChecked() && !cb_magnetometro_actual.isChecked() && btn_resultados_magnetometro.isEnabled()
         ) {
-            Log.e("if", "2-1");
             BotonDeshabilitado();
         }
 
@@ -243,23 +232,19 @@ public class SensorMagnetometroFragment extends Fragment implements SensorEventL
 
         if (cb_magnetometro_actual.isChecked() && (ctv_magnetometro_calculo_1.isChecked() || ctv_magnetometro_calculo_2.isChecked()) &&
                 !btn_resultados_magnetometro.isEnabled()) {
-            Log.e("if", "3");
             BotonHabilitado();
         } else if (cb_magnetometro_actual.isChecked() && !ctv_magnetometro_calculo_1.isChecked() && !ctv_magnetometro_calculo_2.isChecked() &&
                 btn_resultados_magnetometro.isEnabled()) {
-            Log.e("if", "3-1");
             BotonDeshabilitado();
         }
 
     }
     private void BotonHabilitado() {
-        Log.e("Boton", "Habilitado");
         btn_resultados_magnetometro.setTextColor(ContextCompat.getColor(context, R.color.black));
         btn_resultados_magnetometro.setBackgroundColor(ContextCompat.getColor(context, R.color.celeste));
         btn_resultados_magnetometro.setEnabled(true);
     }
     private void BotonDeshabilitado() {
-        Log.e("Boton", "Deshabilitado");
         btn_resultados_magnetometro.setTextColor(ContextCompat.getColor(context, R.color.gris_oscuro));
         btn_resultados_magnetometro.setBackgroundColor(ContextCompat.getColor(context, R.color.gris_claro));
         btn_resultados_magnetometro.setEnabled(false);
@@ -294,7 +279,6 @@ public class SensorMagnetometroFragment extends Fragment implements SensorEventL
                     if (dispositivoConInternet.equals("ConInternet")) {
                         tv_dialog_subtitle_GD.setVisibility(View.INVISIBLE);
 
-                        //doc.put("isExists", true);
                         ValidarCheckBoxDatos();
                         IsRegisterDB();
 
@@ -305,8 +289,7 @@ public class SensorMagnetometroFragment extends Fragment implements SensorEventL
                             public void run() {
                                 sensorManager.unregisterListener(SensorMagnetometroFragment.this);
                                 dialogGD.dismiss();
-                                Log.e("DialogConexionRed", "mostrarDialogConexionRed");
-                                mostrarDialogConexionRed();
+                                ((MainActivity) getActivity()).mostrarDialogConexionRed();
                             }
                         }, 600);
                     }
@@ -346,6 +329,7 @@ public class SensorMagnetometroFragment extends Fragment implements SensorEventL
             magnetismo_1.put("y", magnetismoEncontrada[1]);
             magnetismo_1.put("z", magnetismoEncontrada[2]);
             doc.put("magnetismo_1", magnetismo_1);
+            Log.e("magnetismo_1", String.valueOf(magnetismo_1));
         }
         if (ctv_magnetometro_calculo_2.isChecked()) {
             HashMap<String, Serializable> magnetismo_2 = new HashMap<String, Serializable>();
@@ -353,7 +337,9 @@ public class SensorMagnetometroFragment extends Fragment implements SensorEventL
             magnetismo_2.put("y", magnetismoEncontrada[1]);
             magnetismo_2.put("z", magnetismoEncontrada[2]);
             doc.put("magnetismo_2", magnetismo_2);
+            Log.e("magnetismo_2", String.valueOf(magnetismo_2));
         }
+
     }
 
     private void IsRegisterDB() {
@@ -378,40 +364,52 @@ public class SensorMagnetometroFragment extends Fragment implements SensorEventL
         Log.e("DOCResultsAEnviar1", String.valueOf(docIsRegister));
         for (Map.Entry entry : docIsRegister.entrySet()) {
             if ((doc.containsKey(entry.getKey().toString())) &&
+                    (!entry.getKey().toString().equals("magnetismo_1") && !entry.getKey().toString().equals("magnetismo_2")) &&
                     (!Objects.equals(docIsRegister.get(entry.getKey().toString()).toString(), doc.get(entry.getKey().toString()).toString()))) {
-
+                isModificado = true;
                 docIsRegister.put(entry.getKey().toString(), doc.get(entry.getKey().toString()));
                 doc.remove(entry.getKey().toString());
             }
             else if ((doc.containsKey(entry.getKey().toString())) &&
+                    (!entry.getKey().toString().equals("magnetismo_1") && !entry.getKey().toString().equals("magnetismo_2")) &&
                     (Objects.equals(docIsRegister.get(entry.getKey().toString()).toString(), doc.get(entry.getKey().toString()).toString()))) {
-
+                doc.remove(entry.getKey().toString());
+            } else if ((doc.containsKey(entry.getKey().toString()) &&
+                    (entry.getKey().toString().equals("magnetismo_1") || entry.getKey().toString().equals("magnetismo_2")))
+            ) {
+                isModificado = true;
+                docIsRegister.put(entry.getKey().toString(), doc.get(entry.getKey().toString()));
                 doc.remove(entry.getKey().toString());
             }
         }
         if (doc.size() > 0) {
             for (Map.Entry entry : doc.entrySet()) {
+                isModificado = true;
                 docIsRegister.put(entry.getKey().toString(), doc.get(entry.getKey().toString()));
             }
         }
 
         Log.e("DOCResultsAEnviar2", String.valueOf(docIsRegister));
 
-        documentReference.update(sensorDB, docIsRegister)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        dialogGD.dismiss();
-                        Log.e("Datos", "Actualizados");
-                        ((MainActivity) getActivity()).replaceFragmentResultados(sensorDB, docIsRegister);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("Datos", "Error", e);
-                    }
-                });
+        if (isModificado) {
+            documentReference.update(sensorDB, docIsRegister)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            dialogGD.dismiss();
+                            ((MainActivity) getActivity()).replaceFragmentResultados(sensorDB, docIsRegister);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("Datos", "Error", e);
+                        }
+                    });
+        } else {
+            dialogGD.dismiss();
+            ((MainActivity) getActivity()).replaceFragmentResultados(sensorDB, docIsRegister);
+        }
     }
 
     private boolean IsOnline(Context context) {
@@ -420,53 +418,15 @@ public class SensorMagnetometroFragment extends Fragment implements SensorEventL
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
-        try {
-            if ((networkInfo != null) && (networkInfo.isAvailable()) && (networkInfo.isConnected())) {
-                HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.google.com/").openConnection());
-                urlc.setRequestProperty("User-Agent", "Test");
-                urlc.setRequestProperty("Connection", "close");
-                urlc.setConnectTimeout(500);
-                urlc.connect();
-                dispositivoConInternet = "ConInternet";
-                bandIsOnline = true;
-            } else {
-                dispositivoConInternet = "SinInternet";
-                bandIsOnline = false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if ((networkInfo != null) && (networkInfo.isAvailable()) && (networkInfo.isConnected())) {
+            dispositivoConInternet = "ConInternet";
+            bandIsOnline = true;
+        } else {
             dispositivoConInternet = "SinInternet";
             bandIsOnline = false;
         }
 
-        Log.e("Conexión", dispositivoConInternet);
-
         return bandIsOnline;
-    }
-
-    private void mostrarDialogConexionRed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-        LayoutInflater inflater = getLayoutInflater();
-
-        View view = inflater.inflate(R.layout.dialog_sin_conexion_red, null);
-
-        builder.setView(view);
-        builder.setCancelable(false);
-
-        AlertDialog dialog = builder.create();
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        }
-        dialog.show();
-
-        Button btn_wifi_error = view.findViewById(R.id.dialog_btn_wifi_error);
-        btn_wifi_error.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
     }
 
     @Override

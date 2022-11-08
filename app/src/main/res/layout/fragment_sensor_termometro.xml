@@ -29,7 +29,7 @@
                 android:layout_margin="10dp"
                 android:backgroundTint="@color/white"
                 app:cardCornerRadius="15dp"
-                app:cardElevation="15dp">
+                app:cardElevation="7dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -142,7 +142,7 @@
                     android:layout_weight="1"
                     android:layout_margin="10dp"
                     app:cardBackgroundColor="@color/white"
-                    app:cardElevation="7dp"
+                    app:cardElevation="4dp"
                     app:cardCornerRadius="10dp"
                     >
                     <CheckedTextView
@@ -164,7 +164,7 @@
                     android:layout_weight="1"
                     android:layout_margin="10dp"
                     app:cardBackgroundColor="@color/white"
-                    app:cardElevation="7dp"
+                    app:cardElevation="4dp"
                     app:cardCornerRadius="10dp"
                     >
                     <CheckedTextView
@@ -187,14 +187,15 @@
         android:id="@+id/btn_resultados_termometro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:backgroundTint="@color/celeste"
+        android:layout_marginBottom="15dp"
+        android:backgroundTint="@color/gris_claro"
         android:paddingHorizontal="50dp"
         android:paddingVertical="9dp"
         android:text="Registrar"
         android:textAllCaps="false"
-        android:textColor="@color/black"
+        android:textColor="@color/gris_oscuro"
         android:textSize="18sp"
+        android:enabled="false"
         app:cornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

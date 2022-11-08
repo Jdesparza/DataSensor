@@ -250,8 +250,7 @@ public class SensorGPSFragment extends Fragment {
                             @Override
                             public void run() {
                                 dialogGD.dismiss();
-                                Log.e("DialogConexionRed", "mostrarDialogConexionRed");
-                                mostrarDialogConexionRed();
+                                ((MainActivity) getActivity()).mostrarDialogConexionRed();
                             }
                         }, 600);
                     }
@@ -321,6 +320,7 @@ public class SensorGPSFragment extends Fragment {
     }
 
     private void UpdateDB() {
+        locationManager.removeUpdates(locationListener);
         Log.e("DOCResultsAEnviar1", String.valueOf(docIsRegister));
         for (Map.Entry entry : docIsRegister.entrySet()) {
             if ((doc.containsKey(entry.getKey().toString())) &&
@@ -353,13 +353,11 @@ public class SensorGPSFragment extends Fragment {
 
 
         if (isModificado) {
-            Log.e("Modificado", String.valueOf(isModificado));
             documentReference.update(sensorDB, docIsRegister)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
                             dialogGD.dismiss();
-                            Log.e("Datos", "Actualizados");
                             ((MainActivity) getActivity()).replaceFragmentResultados(sensorDB, docIsRegister);
                         }
                     })
@@ -370,7 +368,6 @@ public class SensorGPSFragment extends Fragment {
                         }
                     });
         } else {
-            Log.e("Modificado", String.valueOf(isModificado));
             dialogGD.dismiss();
             ((MainActivity) getActivity()).replaceFragmentResultados(sensorDB, docIsRegister);
         }
@@ -382,84 +379,23 @@ public class SensorGPSFragment extends Fragment {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
-        try {
-            if ((networkInfo != null) && (networkInfo.isAvailable()) && (networkInfo.isConnected())) {
-                HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.google.com/").openConnection());
-                urlc.setRequestProperty("User-Agent", "Test");
-                urlc.setRequestProperty("Connection", "close");
-                urlc.setConnectTimeout(500);
-                urlc.connect();
-                dispositivoConInternet = "ConInternet";
-                bandIsOnline = true;
-            } else {
-                dispositivoConInternet = "SinInternet";
-                bandIsOnline = false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if ((networkInfo != null) && (networkInfo.isAvailable()) && (networkInfo.isConnected())) {
+            dispositivoConInternet = "ConInternet";
+            bandIsOnline = true;
+        } else {
             dispositivoConInternet = "SinInternet";
             bandIsOnline = false;
         }
 
-        Log.e("Conexión", dispositivoConInternet);
-
         return bandIsOnline;
-    }
-    private void mostrarDialogConexionRed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-        LayoutInflater inflater = getLayoutInflater();
-
-        View view = inflater.inflate(R.layout.dialog_sin_conexion_red, null);
-
-        builder.setView(view);
-        builder.setCancelable(false);
-
-        AlertDialog dialog = builder.create();
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        }
-        dialog.show();
-
-        Button btn_wifi_error = view.findViewById(R.id.dialog_btn_wifi_error);
-        btn_wifi_error.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-    }
-
-    private void CTVHabilitados() {
-        Log.e("CTV", "Habilitados");
-        ctv_gps_calculo_1.setEnabled(true);
-        ctv_gps_calculo_1.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
-        ctv_gps_calculo_1.setTextColor(ContextCompat.getColor(context, R.color.black));
-        ctv_gps_calculo_2.setEnabled(true);
-        ctv_gps_calculo_2.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
-        ctv_gps_calculo_2.setTextColor(ContextCompat.getColor(context, R.color.black));
-    }
-
-    private void CTVDeshabilitados() {
-        Log.e("CTV", "Desabilitados");
-        ctv_gps_calculo_1.setEnabled(false);
-        ctv_gps_calculo_1.setBackgroundColor(ContextCompat.getColor(context, R.color.gris_claro));
-        ctv_gps_calculo_1.setTextColor(ContextCompat.getColor(context, R.color.gris_oscuro));
-        ctv_gps_calculo_2.setEnabled(false);
-        ctv_gps_calculo_2.setBackgroundColor(ContextCompat.getColor(context, R.color.gris_claro));
-        ctv_gps_calculo_2.setTextColor(ContextCompat.getColor(context, R.color.gris_oscuro));
-        if (ctv_gps_calculo_1.isChecked()) ctv_gps_calculo_1.setChecked(false);
-        if (ctv_gps_calculo_2.isChecked()) ctv_gps_calculo_2.setChecked(false);
     }
 
     private void BotonHabilitado() {
-        Log.e("Boton", "Habilitado");
         btn_resultados_gps.setTextColor(ContextCompat.getColor(context, R.color.black));
         btn_resultados_gps.setBackgroundColor(ContextCompat.getColor(context, R.color.celeste));
         btn_resultados_gps.setEnabled(true);
     }
     private void BotonDeshabilitado() {
-        Log.e("Boton", "Deshabilitado");
         btn_resultados_gps.setTextColor(ContextCompat.getColor(context, R.color.gris_oscuro));
         btn_resultados_gps.setBackgroundColor(ContextCompat.getColor(context, R.color.gris_claro));
         btn_resultados_gps.setEnabled(false);
@@ -493,12 +429,6 @@ public class SensorGPSFragment extends Fragment {
             }
         });
         dialog.show();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (!dispositivoConInternet.equals("EnEspera")) locationManager.removeUpdates(locationListener);
     }
 
     private class IsOnlineTask extends AsyncTask<Void, Void, Void> {

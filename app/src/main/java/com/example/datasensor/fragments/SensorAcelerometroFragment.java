@@ -88,12 +88,6 @@ public class SensorAcelerometroFragment extends Fragment implements SensorEventL
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        //if (sensorAcelerometro != null) sensorManager.unregisterListener(this);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -142,7 +136,6 @@ public class SensorAcelerometroFragment extends Fragment implements SensorEventL
 
                     GuardarDatos();
                 } else {
-                    Log.e("Click", "Sin Calculo");
                     GuardarDatos();
                 }
             }
@@ -169,7 +162,6 @@ public class SensorAcelerometroFragment extends Fragment implements SensorEventL
     private void HabilitarDesabilitarBotonResult() {
 
         if (cb_acelerometro_actual.isChecked() && !ctv_acelerometro_calculo_1.isEnabled() && !ctv_acelerometro_calculo_2.isEnabled()) {
-            Log.e("if", "1");
             ctv_acelerometro_calculo_1.setEnabled(true);
             ctv_acelerometro_calculo_1.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
             ctv_acelerometro_calculo_1.setTextColor(ContextCompat.getColor(context, R.color.black));
@@ -178,7 +170,6 @@ public class SensorAcelerometroFragment extends Fragment implements SensorEventL
             ctv_acelerometro_calculo_2.setTextColor(ContextCompat.getColor(context, R.color.black));
         }
         else if (!cb_acelerometro_actual.isChecked() && ctv_acelerometro_calculo_1.isEnabled() && ctv_acelerometro_calculo_2.isEnabled()) {
-            Log.e("if", "1-1");
             ctv_acelerometro_calculo_1.setEnabled(false);
             ctv_acelerometro_calculo_1.setBackgroundColor(ContextCompat.getColor(context, R.color.gris_claro));
             ctv_acelerometro_calculo_1.setTextColor(ContextCompat.getColor(context, R.color.gris_oscuro));
@@ -195,7 +186,6 @@ public class SensorAcelerometroFragment extends Fragment implements SensorEventL
                         cb_acelerometro_version.isChecked()) &&
                         (!cb_acelerometro_actual.isChecked() && !btn_resultados_acelerometro.isEnabled())
         ) {
-            Log.e("if", "2");
             BotonHabilitado();
         }
         else if (
@@ -203,7 +193,6 @@ public class SensorAcelerometroFragment extends Fragment implements SensorEventL
                         !cb_acelerometro_potencia.isChecked() && !cb_acelerometro_resolucion.isChecked() &&
                         !cb_acelerometro_version.isChecked() && !cb_acelerometro_actual.isChecked() && btn_resultados_acelerometro.isEnabled()
         ) {
-            Log.e("if", "2-1");
             BotonDeshabilitado();
         }
 
@@ -243,23 +232,19 @@ public class SensorAcelerometroFragment extends Fragment implements SensorEventL
 
         if (cb_acelerometro_actual.isChecked() && (ctv_acelerometro_calculo_1.isChecked() || ctv_acelerometro_calculo_2.isChecked()) &&
                 !btn_resultados_acelerometro.isEnabled()) {
-            Log.e("if", "3");
             BotonHabilitado();
         } else if (cb_acelerometro_actual.isChecked() && !ctv_acelerometro_calculo_1.isChecked() && !ctv_acelerometro_calculo_2.isChecked() &&
                 btn_resultados_acelerometro.isEnabled()) {
-            Log.e("if", "3-1");
             BotonDeshabilitado();
         }
 
     }
     private void BotonHabilitado() {
-        Log.e("Boton", "Habilitado");
         btn_resultados_acelerometro.setTextColor(ContextCompat.getColor(context, R.color.black));
         btn_resultados_acelerometro.setBackgroundColor(ContextCompat.getColor(context, R.color.celeste));
         btn_resultados_acelerometro.setEnabled(true);
     }
     private void BotonDeshabilitado() {
-        Log.e("Boton", "Deshabilitado");
         btn_resultados_acelerometro.setTextColor(ContextCompat.getColor(context, R.color.gris_oscuro));
         btn_resultados_acelerometro.setBackgroundColor(ContextCompat.getColor(context, R.color.gris_claro));
         btn_resultados_acelerometro.setEnabled(false);
@@ -294,7 +279,6 @@ public class SensorAcelerometroFragment extends Fragment implements SensorEventL
                     if (dispositivoConInternet.equals("ConInternet")) {
                         tv_dialog_subtitle_GD.setVisibility(View.INVISIBLE);
 
-                        //doc.put("isExists", true);
                         ValidarCheckBoxDatos();
                         IsRegisterDB();
 
@@ -305,8 +289,7 @@ public class SensorAcelerometroFragment extends Fragment implements SensorEventL
                             public void run() {
                                 sensorManager.unregisterListener(SensorAcelerometroFragment.this);
                                 dialogGD.dismiss();
-                                Log.e("DialogConexionRed", "mostrarDialogConexionRed");
-                                mostrarDialogConexionRed();
+                                ((MainActivity) getActivity()).mostrarDialogConexionRed();
                             }
                         }, 600);
                     }
@@ -406,13 +389,11 @@ public class SensorAcelerometroFragment extends Fragment implements SensorEventL
         Log.e("DOCResultsAEnviar2", String.valueOf(docIsRegister));
 
         if (isModificado) {
-            Log.e("Modificado", String.valueOf(isModificado));
             documentReference.update(sensorDB, docIsRegister)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
                             dialogGD.dismiss();
-                            Log.e("Datos", "Actualizados");
                             ((MainActivity) getActivity()).replaceFragmentResultados(sensorDB, docIsRegister);
                         }
                     })
@@ -423,7 +404,6 @@ public class SensorAcelerometroFragment extends Fragment implements SensorEventL
                         }
                     });
         } else {
-            Log.e("Modificado", String.valueOf(isModificado));
             dialogGD.dismiss();
             ((MainActivity) getActivity()).replaceFragmentResultados(sensorDB, docIsRegister);
         }
@@ -435,54 +415,17 @@ public class SensorAcelerometroFragment extends Fragment implements SensorEventL
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
-        try {
-            if ((networkInfo != null) && (networkInfo.isAvailable()) && (networkInfo.isConnected())) {
-                HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.google.com/").openConnection());
-                urlc.setRequestProperty("User-Agent", "Test");
-                urlc.setRequestProperty("Connection", "close");
-                urlc.setConnectTimeout(500);
-                urlc.connect();
-                dispositivoConInternet = "ConInternet";
-                bandIsOnline = true;
-            } else {
-                dispositivoConInternet = "SinInternet";
-                bandIsOnline = false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if ((networkInfo != null) && (networkInfo.isAvailable()) && (networkInfo.isConnected())) {
+            dispositivoConInternet = "ConInternet";
+            bandIsOnline = true;
+        } else {
             dispositivoConInternet = "SinInternet";
             bandIsOnline = false;
         }
-
-        Log.e("Conexión", dispositivoConInternet);
-
         return bandIsOnline;
     }
 
-    private void mostrarDialogConexionRed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-        LayoutInflater inflater = getLayoutInflater();
-
-        View view = inflater.inflate(R.layout.dialog_sin_conexion_red, null);
-
-        builder.setView(view);
-        builder.setCancelable(false);
-
-        AlertDialog dialog = builder.create();
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        }
-        dialog.show();
-
-        Button btn_wifi_error = view.findViewById(R.id.dialog_btn_wifi_error);
-        btn_wifi_error.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-    }
 
     @Override
     public void onSensorChanged(SensorEvent event) {

@@ -26,7 +26,7 @@
             android:id="@+id/tv_resultinfo_resultados"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight=".9"
             android:textAlignment="textEnd"
             android:textSize="16.5sp"
             android:textAllCaps="false"

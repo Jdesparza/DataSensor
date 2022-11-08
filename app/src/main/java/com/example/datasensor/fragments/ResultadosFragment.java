@@ -77,7 +77,6 @@ public class ResultadosFragment extends Fragment {
         datosEnviados = getArguments();
         tipoSensor = datosEnviados.getString("tipoSensor");
         doc = (HashMap<String, Serializable>) datosEnviados.getSerializable("doc");
-        Log.e("DOCResults", String.valueOf(doc));
 
         sv_contenedor_resultados = view.findViewById(R.id.sv_contenedor_resultados);
         tv_title_sensor_result = view.findViewById(R.id.tv_title_sensor_result);
@@ -107,9 +106,6 @@ public class ResultadosFragment extends Fragment {
         String nombre = "";
         String claveString = "";
         String valorString = "";
-        DecimalFormat df = new DecimalFormat("#.######");
-        df.setRoundingMode(RoundingMode.DOWN);
-        //Log.e("p", df.format(d));
         TreeMap<String, Serializable> docSort = new TreeMap<>(doc);
         Map<String, Serializable> docTemp = new HashMap<String, Serializable>();
         docTemp.putAll(docSort);
@@ -143,9 +139,10 @@ public class ResultadosFragment extends Fragment {
                     claveString = mapDOC1.getKey().toString();
 
                     if (claveString.equals("resolucion") || claveString.equals("potencia")
-                            || claveString.equals("calRitmoCardiaco_1") || claveString.equals("calRitmoCardiaco_2") || (claveString.equals("rangoMax") &&
-                            !tipoSensor.replace("sensor", "").equals("Podometro"))) {
-                        valorString = String.valueOf(new BigDecimal(mapDOC1.getValue().toString()).setScale(5, RoundingMode.UP));
+                            || claveString.equals("calRitmoCardiaco_1") || claveString.equals("calRitmoCardiaco_2")
+                            || claveString.equals("rangoMax")) {
+                        valorString = String.valueOf(new BigDecimal(Double.parseDouble(mapDOC1.getValue().toString()))
+                                .setScale(5, RoundingMode.DOWN).doubleValue());
                     } else {
                         valorString = mapDOC1.getValue().toString();
                     }
@@ -157,26 +154,34 @@ public class ResultadosFragment extends Fragment {
                     } else if (claveString.equals("resolucion")) {
                         claveString = "Resolución";
                     } else if (claveString.equals("proximidad_1") || claveString.equals("proximidad_2")) {
-                        claveString = claveString.replace("proximidad_", "Proximidad ");
+                        if (claveString.equals("proximidad_1")) claveString = "Prox. Corta";
+                        else claveString = "Prox. Larga";
                     } else if (claveString.equals("iluminacion_1") || claveString.equals("iluminacion_2")) {
-                        claveString = claveString.replace("iluminacion_", "Iluminación ");
+                        tituloInfo.add("Iluminación Espacio");
+                        resultadoInfo.add("");
+                        if (claveString.equals("iluminacion_1")) claveString = "Interno";
+                        else claveString = "Externo";
                     } else if (claveString.equals("temperatura_1") || claveString.equals("temperatura_2")) {
-                        claveString = claveString.replace("temperatura_", "Temperatura ");
+                        tituloInfo.add("Temperatura");
+                        resultadoInfo.add("");
+                        if (claveString.equals("temperatura_1")) claveString = "Mañana";
+                        else claveString = "Medio Día";
                     } else if (claveString.equals("calPasos_10") || claveString.equals("calPasos_15")) {
-                        claveString = claveString.replace("calPasos_", "Cal. Pasos ");
+                        if (claveString.equals("calPasos_10")) claveString = "Dar 10 Pasos";
+                        else claveString = "Dar 15 Pasos";
                     } else if (claveString.equals("calRitmoCardiaco_1") || claveString.equals("calRitmoCardiaco_2")) {
-                        claveString = claveString.replace("calRitmoCardiaco_", "Ritmo Cardíaco ");
+                        if (claveString.equals("calRitmoCardiaco_1")) claveString = "Al Correr";
+                        else claveString = "Al Caminar";
                     } else {
                         claveString = mapDOC1.getKey().toString().substring(0, 1).toUpperCase(Locale.ROOT) +
                                 mapDOC1.getKey().toString().substring(1).toLowerCase(Locale.ROOT);
                     }
+
                     claveString += ":";
 
                     tituloInfo.add(claveString);
                     resultadoInfo.add(valorString);
                     docTemp.remove(mapDOC1.getKey().toString());
-
-                    Log.e(claveString, valorString);
                 }
             } else {
                 docTemp.remove(mapDOC1.getKey().toString());
@@ -188,17 +193,22 @@ public class ResultadosFragment extends Fragment {
                 claveString = entry.getKey().toString();
 
                 if (claveString.equals("aceleracion_1") || claveString.equals("aceleracion_2"))
-                    claveString = claveString.replace("aceleracion_", "Aceleración ");
+                    if (claveString.equals("aceleracion_1")) claveString = "Dispos. Vertical";
+                    else claveString = "Dispos. Horizontal";
                 else if (claveString.equals("rotacion_1") || claveString.equals("rotacion_2"))
-                    claveString = claveString.replace("rotacion_", "Rotación ");
+                    if (claveString.equals("rotacion_1")) claveString = "Dispos. Vertical";
+                    else claveString = "Dispos. Horizontal";
                 else if (claveString.equals("magnetismo_1") || claveString.equals("magnetismo_2"))
-                    claveString = claveString.replace("magnetismo_", "Magnetismo ");
+                    claveString = claveString.replace("magnetismo_", "Cálculo ");
                 else if (claveString.equals("ubicacion_1") || claveString.equals("ubicacion_2"))
-                    claveString = claveString.replace("ubicacion_", "Ubicación ");
+                    if (claveString.equals("ubicacion_1")) claveString = "La Cruz UTPL";
+                    else claveString = "Canchas Deport. UTPL";
                 else if (claveString.equals("presion_1") || claveString.equals("presion_2"))
-                    claveString = claveString.replace("presion_", "Presión ");
+                    if (claveString.equals("presion_1")) claveString = "Presión Mañana";
+                    else claveString = "Presión Tarde";
                 else if (claveString.equals("calSonido_1") || claveString.equals("calSonido_2"))
-                    claveString = claveString.replace("calSonido_", "Cal. Sonido ");
+                    if (claveString.equals("calSonido_1")) claveString = "Cafetería UTPL";
+                    else claveString = "Biblioteca UTPL";
                 else if (claveString.equals("camFrontal") || claveString.equals("camTrasera"))
                     claveString = claveString.replace("cam", "Cám. ");
 
@@ -207,8 +217,8 @@ public class ResultadosFragment extends Fragment {
 
                 calculo = (Map<String, Serializable>) entry.getValue();
                 for (Map.Entry cal : calculo.entrySet()) {
-                    if (!cal.getKey().toString().equals("canal")) {
-                        valorString = String.valueOf(new BigDecimal(cal.getValue().toString())
+                    if (!cal.getKey().toString().equals("canal") && cal.getValue() != null) {
+                        valorString = String.valueOf(new BigDecimal(Double.parseDouble(cal.getValue().toString()))
                                 .setScale(5, RoundingMode.DOWN).doubleValue());
                     } else {
                         valorString = cal.getValue().toString();

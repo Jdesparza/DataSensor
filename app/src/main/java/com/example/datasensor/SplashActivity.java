@@ -60,8 +60,6 @@ public class SplashActivity extends AppCompatActivity {
         tv_cargando_splash.setText("Cargando...");
 
         if (!idSmartphone.equals("No hay modelo")) {
-            Log.e("Ingresando", "Sin Busqueda Internet");
-            Log.e("ID", idSmartphone);
             TiempoEsperaActividades(true);
         } else {
             tv_cargando_splash.setText("Verificando...");
@@ -112,8 +110,6 @@ public class SplashActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
 
-                        Log.e("ComprobarBD", "existe");
-
                         SharedPreferences.Editor editorInfoApp = sharedPreferences.edit();
 
                         editorInfoApp.putString("IdSmartphone", idSmartphone);
@@ -148,11 +144,10 @@ public class SplashActivity extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
                     } else {
-                        Log.e("ComprobarBD", "no existe");
                         TiempoEsperaActividades(false);
                     }
                 } else {
-                    Log.d("ProblemaBD", "Error al buscar documento", task.getException());
+                    Log.e("ProblemaBD", "Error al buscar documento", task.getException());
                 }
             }
         });
@@ -181,26 +176,13 @@ public class SplashActivity extends AppCompatActivity {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
-        try {
-            if ((networkInfo != null) && (networkInfo.isAvailable()) && (networkInfo.isConnected())) {
-                HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.google.com/").openConnection());
-                urlc.setRequestProperty("User-Agent", "Test");
-                urlc.setRequestProperty("Connection", "close");
-                urlc.setConnectTimeout(1000);
-                urlc.connect();
-                dispositivoConInternet = "ConInternet";
-                bandIsOnline = true;
-            } else {
-                dispositivoConInternet = "SinInternet";
-                bandIsOnline = false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if ((networkInfo != null) && (networkInfo.isAvailable()) && (networkInfo.isConnected())) {
+            dispositivoConInternet = "ConInternet";
+            bandIsOnline = true;
+        } else {
             dispositivoConInternet = "SinInternet";
             bandIsOnline = false;
         }
-
-        //Log.e("IsOnline", String.valueOf((networkInfo != null) && (networkInfo.isAvailable()) && (networkInfo.isConnected())));
 
         return bandIsOnline;
     }
