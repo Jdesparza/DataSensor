@@ -3,12 +3,18 @@ package com.example.datasensor.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.ImageDecoder;
+import android.graphics.ImageFormat;
+import android.graphics.Picture;
+import android.graphics.PixelFormat;
 import android.graphics.SurfaceTexture;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.media.Image;
+import android.media.MediaRecorder;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -33,6 +39,7 @@ import android.widget.TextView;
 
 import com.example.datasensor.MainActivity;
 import com.example.datasensor.R;
+import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -44,6 +51,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -312,21 +320,19 @@ public class SensorCamaraFragment extends Fragment {
 
     private void UpdateDB() {
         Log.e("DOCResultsAEnviar1", String.valueOf(docIsRegister));
-        if (!docIsRegister.containsKey("camFrontal") || !docIsRegister.containsKey("camTrasera")) {
-            for (Map.Entry entry : docIsRegister.entrySet()) {
-                if ((doc.containsKey(entry.getKey().toString()) &&
-                        (entry.getKey().toString().equals("camFrontal") || entry.getKey().toString().equals("camTrasera")))
-                ) {
-                    isModificado = true;
-                    docIsRegister.put(entry.getKey().toString(), doc.get(entry.getKey().toString()));
-                    doc.remove(entry.getKey().toString());
-                }
+        for (Map.Entry entry : docIsRegister.entrySet()) {
+            if ((doc.containsKey(entry.getKey().toString()) &&
+                    (entry.getKey().toString().equals("camFrontal") || entry.getKey().toString().equals("camTrasera")))
+            ) {
+                isModificado = true;
+                docIsRegister.put(entry.getKey().toString(), doc.get(entry.getKey().toString()));
+                doc.remove(entry.getKey().toString());
             }
-            if (doc.size() > 0) {
-                for (Map.Entry entry : doc.entrySet()) {
-                    isModificado = true;
-                    docIsRegister.put(entry.getKey().toString(), doc.get(entry.getKey().toString()));
-                }
+        }
+        if (doc.size() > 0) {
+            for (Map.Entry entry : doc.entrySet()) {
+                isModificado = true;
+                docIsRegister.put(entry.getKey().toString(), doc.get(entry.getKey().toString()));
             }
         }
 
@@ -360,7 +366,7 @@ public class SensorCamaraFragment extends Fragment {
             getCameraIdList = cameraManager.getCameraIdList();
             cameraCharacteristics = cameraManager.getCameraCharacteristics(idCamara);
             streamConfigurationMap = cameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-            sizes = streamConfigurationMap.getOutputSizes(SurfaceTexture.class);
+            sizes = streamConfigurationMap.getOutputSizes(streamConfigurationMap.getOutputFormats()[0]);
             for (int i = 0; i < sizes.length; i++) {
                 maxResolucion = sizes[i];
                 maxResolucionMP = (sizes[i].getWidth() * sizes[i].getHeight()) / 1000000.0f;

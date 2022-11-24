@@ -416,6 +416,7 @@ public class SensorGPSFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        requireActivity().onBackPressed();
                     }
                 }).create();
         if (dialog.getWindow() != null) {
