@@ -44,7 +44,7 @@
                         android:background="@drawable/style_borde_inferior"
                         android:paddingVertical="10dp"
                         android:text="Datos"
-                        android:textColor="@color/rosado_medio"
+                        android:textColor="@color/rosado_alto"
                         android:textSize="20sp" />
 
                     <CheckBox
@@ -94,7 +94,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cv_check_camara_calculo_1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:layout_margin="10dp"
                     app:cardBackgroundColor="@color/white"
@@ -104,7 +104,7 @@
                     <CheckedTextView
                         android:id="@+id/ctv_camara_calculo_1"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:background="@color/white"
                         android:gravity="center"
                         android:padding="10dp"
@@ -115,7 +115,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cv_check_camara_calculo_2"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:layout_margin="10dp"
                     app:cardBackgroundColor="@color/white"
@@ -125,7 +125,7 @@
                     <CheckedTextView
                         android:id="@+id/ctv_camara_calculo_2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:background="@color/white"
                         android:gravity="center"
                         android:padding="10dp"

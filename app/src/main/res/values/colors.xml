@@ -5,6 +5,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red_claro">#ED2727</color>
+    <color name="red_medio">#DF0F0F</color>
     <color name="red_oscuro">#BC0924</color>
     <color name="celeste">#B0DEFF</color>
     <color name="gris_claro">#C0C0C1</color>
@@ -12,6 +13,7 @@
     <color name="gris_oscuro">#6A6A6A</color>
     <color name="partSup">#293249</color>
     <color name="transparente">#00FFFFFF</color>
+    <color name="rosado_alto">#BA4D49</color>
     <color name="rosado_medio">#D15B57</color>
     <color name="rosado_bajo">#FFB1AF</color>
     <color name="amarrillo_claro">#FFEB3B</color>

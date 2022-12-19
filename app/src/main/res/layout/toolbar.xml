@@ -8,9 +8,10 @@
 
     <ImageButton
         android:id="@+id/toolbar_to_return"
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:backgroundTint="#00FFFFFF"
+        android:contentDescription="@string/regresar"
         android:src="@drawable/ic_to_return"
         android:visibility="gone" />
 

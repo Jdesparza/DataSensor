@@ -26,11 +26,12 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="¡Hola!"
-        android:textColor="@color/red_claro"
+        android:textColor="@color/red_medio"
+        android:background="@color/transparente"
         android:textSize="25sp"
         android:textStyle="bold"
         android:layout_marginTop="35dp"

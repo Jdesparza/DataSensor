@@ -3,9 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/drawable/ic_to_return.xml" value="0.144" />
         <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/drawable/img_view_radius_conexion_red.xml" value="0.1725" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/drawable/style_borde_inferior.xml" value="0.204" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/activity_main.xml" value="0.18432971014492755" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/activity_registrar_sensor_smartphone.xml" value="0.18432971014492755" />
         <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/activity_splash.xml" value="0.17527173913043478" />
-        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/dialog_calculo_dato_sensor.xml" value="0.25" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/dialog_calculo_dato_sensor.xml" value="0.2" />
         <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/dialog_guardar_datos_sensores.xml" value="0.25" />
         <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/dialog_registrar_sensores_smartphone.xml" value="0.22" />
         <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/dialog_sin_conexion_red.xml" value="0.33" />
@@ -25,6 +29,7 @@
         <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/fragment_sensores.xml" value="0.25" />
         <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/gv_item_sensorsmartphone.xml" value="0.67" />
         <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/rv_item_informacion_resultados.xml" value="0.33" />
+        <entry key="..\:/Users/jordy/AndroidStudioProjects/DataSensor/app/src/main/res/layout/toolbar.xml" value="0.18432971014492755" />
       </map>
     </option>
   </component>

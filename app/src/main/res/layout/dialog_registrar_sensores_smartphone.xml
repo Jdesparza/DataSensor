@@ -69,7 +69,7 @@
             android:textAllCaps="false"
             android:paddingTop="3dp"
             android:text="Verificando..."
-            android:textColor="@color/gris_medio"
+            android:textColor="@color/gris_oscuro"
             android:textSize="14sp"
             app:layout_constraintTop_toBottomOf="@+id/dialog_progressh_registrarSensor" />
     </androidx.constraintlayout.widget.ConstraintLayout>

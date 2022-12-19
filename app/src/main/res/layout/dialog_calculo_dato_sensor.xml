@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="20dp"
+    android:background="@color/gris_oscuro"
     android:padding="20dp">
 
 
@@ -19,11 +20,12 @@
         <ImageButton
             android:id="@+id/btn_close_dialog_calculo_dato_sensor"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/red_oscuro"
-            android:paddingRight="25dp"
-            android:layout_marginRight="-5dp"
+            android:layout_height="50dp"
             android:layout_marginTop="-8dp"
+            android:layout_marginRight="-5dp"
+            android:backgroundTint="@color/red_oscuro"
+            android:contentDescription="@string/cerrar_dialogo"
+            android:paddingRight="25dp"
             android:src="@drawable/ic_close"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -53,7 +55,8 @@
             android:justificationMode="inter_word"
             android:text="Subtítulo"
             android:textAllCaps="false"
-            android:textColor="@color/gris_medio"
+            android:textColor="@color/gris_oscuro"
+            android:background="@color/white"
             android:textSize="12sp"
             app:layout_constraintTop_toBottomOf="@id/tv_title_dialog_dato_sensor"
             />
