@@ -363,7 +363,6 @@ public class SensorCamaraFragment extends Fragment {
 
     private void camaraId(String idCamara) {
         try {
-            getCameraIdList = cameraManager.getCameraIdList();
             cameraCharacteristics = cameraManager.getCameraCharacteristics(idCamara);
             streamConfigurationMap = cameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
             sizes = streamConfigurationMap.getOutputSizes(streamConfigurationMap.getOutputFormats()[0]);
