@@ -301,27 +301,21 @@ public class SensorMagnetometroFragment extends Fragment implements SensorEventL
     }
 
     private void ValidarCheckBoxDatos() {
-        Log.i("Sensor", sensorMagnetometro.getName());
         doc.put("nombre", sensorMagnetometro.getName());
         if (cb_magnetometro_fabricante.isChecked()) {
             doc.put("fabricante", sensorMagnetometro.getVendor());
-            Log.e("Fabricante", String.valueOf(sensorMagnetometro.getVendor()));
         }
         if (cb_magnetometro_version.isChecked()) {
             doc.put("version", sensorMagnetometro.getVersion());
-            Log.e("Versión", String.valueOf(sensorMagnetometro.getVersion()));
         }
         if (cb_magnetometro_potencia.isChecked()) {
             doc.put("potencia", sensorMagnetometro.getPower());
-            Log.e("Potencia", sensorMagnetometro.getPower() + " mA");
         }
         if (cb_magnetometro_resolucion.isChecked()) {
             doc.put("resolucion", sensorMagnetometro.getResolution());
-            Log.e("Resolución", sensorMagnetometro.getResolution() + "  μT");
         }
         if (cb_magnetometro_max.isChecked()) {
             doc.put("rangoMax", sensorMagnetometro.getMaximumRange());
-            Log.e("Máx", sensorMagnetometro.getMaximumRange() + "  μT");
         }
         if (ctv_magnetometro_calculo_1.isChecked()) {
             HashMap<String, Serializable> magnetismo_1 = new HashMap<String, Serializable>();
@@ -329,7 +323,6 @@ public class SensorMagnetometroFragment extends Fragment implements SensorEventL
             magnetismo_1.put("y", magnetismoEncontrada[1]);
             magnetismo_1.put("z", magnetismoEncontrada[2]);
             doc.put("magnetismo_1", magnetismo_1);
-            Log.e("magnetismo_1", String.valueOf(magnetismo_1));
         }
         if (ctv_magnetometro_calculo_2.isChecked()) {
             HashMap<String, Serializable> magnetismo_2 = new HashMap<String, Serializable>();
@@ -337,7 +330,6 @@ public class SensorMagnetometroFragment extends Fragment implements SensorEventL
             magnetismo_2.put("y", magnetismoEncontrada[1]);
             magnetismo_2.put("z", magnetismoEncontrada[2]);
             doc.put("magnetismo_2", magnetismo_2);
-            Log.e("magnetismo_2", String.valueOf(magnetismo_2));
         }
 
     }
@@ -361,7 +353,6 @@ public class SensorMagnetometroFragment extends Fragment implements SensorEventL
     private void UpdateDB() {
         sensorManager.unregisterListener(SensorMagnetometroFragment.this);
 
-        Log.e("DOCResultsAEnviar1", String.valueOf(docIsRegister));
         for (Map.Entry entry : docIsRegister.entrySet()) {
             if ((doc.containsKey(entry.getKey().toString())) &&
                     (!entry.getKey().toString().equals("magnetismo_1") && !entry.getKey().toString().equals("magnetismo_2")) &&
@@ -388,8 +379,6 @@ public class SensorMagnetometroFragment extends Fragment implements SensorEventL
                 docIsRegister.put(entry.getKey().toString(), doc.get(entry.getKey().toString()));
             }
         }
-
-        Log.e("DOCResultsAEnviar2", String.valueOf(docIsRegister));
 
         if (isModificado) {
             documentReference.update(sensorDB, docIsRegister)

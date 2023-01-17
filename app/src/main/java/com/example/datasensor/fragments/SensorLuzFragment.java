@@ -298,35 +298,27 @@ public class SensorLuzFragment extends Fragment implements SensorEventListener {
     }
 
     private void ValidarCheckBoxDatos() {
-        Log.i("Sensor", sensorLuz.getName());
         doc.put("nombre", sensorLuz.getName());
         if (cb_luz_fabricante.isChecked()) {
             doc.put("fabricante", sensorLuz.getVendor());
-            Log.e("Fabricante", String.valueOf(sensorLuz.getVendor()));
         }
         if (cb_luz_version.isChecked()) {
             doc.put("version", sensorLuz.getVersion());
-            Log.e("Versión", String.valueOf(sensorLuz.getVersion()));
         }
         if (cb_luz_potencia.isChecked()) {
             doc.put("potencia", sensorLuz.getPower());
-            Log.e("Potencia", sensorLuz.getPower() + " mA");
         }
         if (cb_luz_resolucion.isChecked()) {
             doc.put("resolucion", sensorLuz.getResolution());
-            Log.e("Resolución", sensorLuz.getResolution() + " lx");
         }
         if (cb_luz_max.isChecked()) {
             doc.put("rangoMax", sensorLuz.getMaximumRange());
-            Log.e("Máx", sensorLuz.getMaximumRange() + " lx");
         }
         if (ctv_luz_calculo_1.isChecked()) {
             doc.put("iluminacion_1", iluminacionEncontrada);
-            Log.e("iluminacion_1", iluminacionEncontrada + " lx");
         }
         if (ctv_luz_calculo_2.isChecked()) {
             doc.put("iluminacion_2", iluminacionEncontrada);
-            Log.e("iluminacion_2", iluminacionEncontrada + " lx");
         }
     }
 
@@ -349,7 +341,6 @@ public class SensorLuzFragment extends Fragment implements SensorEventListener {
     private void UpdateDB() {
         sensorManager.unregisterListener(SensorLuzFragment.this);
 
-        Log.e("DOCResultsAEnviar1", String.valueOf(docIsRegister));
         for (Map.Entry entry : docIsRegister.entrySet()) {
             if ((doc.containsKey(entry.getKey().toString())) &&
                     (!Objects.equals(docIsRegister.get(entry.getKey().toString()).toString(), doc.get(entry.getKey().toString()).toString()))) {
@@ -369,8 +360,6 @@ public class SensorLuzFragment extends Fragment implements SensorEventListener {
                 docIsRegister.put(entry.getKey().toString(), doc.get(entry.getKey().toString()));
             }
         }
-
-        Log.e("DOCResultsAEnviar2", String.valueOf(docIsRegister));
 
         if (isModificado) {
             documentReference.update(sensorDB, docIsRegister)

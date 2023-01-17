@@ -440,11 +440,9 @@ public class SensorMicrofonoFragment extends Fragment {
 
         if (cb_formato_micro.isChecked()) {
             doc.put("formato", formatoMicro);
-            Log.e("Formato", String.valueOf(formatoMicro));
         }
         if (cb_frecuencia_micro.isChecked()) {
             doc.put("frecuencia", frecuencia);
-            Log.e("Frecuencia", frecuencia + " Hz");
         }
         if (ctv_micro_calculo_1.isChecked()) {
             HashMap<String, Serializable> sonido_1 = new HashMap<String, Serializable>();
@@ -455,7 +453,6 @@ public class SensorMicrofonoFragment extends Fragment {
             sonido_1.put("max", decibelMax);
             sonido_1.put("min", decibelMin);
             doc.put("calSonido_1", sonido_1);
-            Log.e("Sonido 01", String.valueOf(sonido_1));
 
         }
         if (ctv_micro_calculo_2.isChecked()) {
@@ -471,7 +468,6 @@ public class SensorMicrofonoFragment extends Fragment {
             sonido_2.put("max", decibelMax);
             sonido_2.put("min", decibelMin);
             doc.put("calSonido_2", sonido_2);
-            Log.e("Sonido 02", String.valueOf(sonido_2));
         }
     }
 
@@ -492,7 +488,6 @@ public class SensorMicrofonoFragment extends Fragment {
     }
 
     private void UpdateDB() {
-        Log.e("DOCResultsAEnviar1", String.valueOf(docIsRegister));
         for (Map.Entry entry : docIsRegister.entrySet()) {
             if ((doc.containsKey(entry.getKey().toString())) &&
                     (!entry.getKey().toString().equals("calSonido_1") && !entry.getKey().toString().equals("calSonido_2")) &&
@@ -519,8 +514,6 @@ public class SensorMicrofonoFragment extends Fragment {
                 docIsRegister.put(entry.getKey().toString(), doc.get(entry.getKey().toString()));
             }
         }
-
-        Log.e("DOCResultsAEnviar2", String.valueOf(docIsRegister));
 
 
         if (isModificado) {
@@ -571,8 +564,6 @@ public class SensorMicrofonoFragment extends Fragment {
                     double mean = v / (double) r;
                     double volume = 10 * Math.log10(mean);
                     DecimalFormat df = new DecimalFormat("####.00");
-                    Log.d("Decibels_dB", "Decibel value:" + df.format(volume));
-                    Log.d("CanalSonometro", String.valueOf(audioRecord.getChannelConfiguration()));
                     canalMicro = String.valueOf(audioRecord.getChannelConfiguration());
                     if (volume > decibelMax) decibelMax = volume;
                     if (volume < decibelMin) decibelMin = volume;

@@ -175,23 +175,17 @@ public class SensorGPSFragment extends Fragment {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 10, locationListener);
     }
     private void ValidarCheckBoxDatos(HashMap<String, Serializable> calculo, String key) {
-        Log.i("Sensor", location_gps.getProvider());
         doc.put("proveedor", location_gps.getProvider());
 
         calculo.put("latitud", location_gps.getLatitude());
-        Log.e("Latitud", location_gps.getLatitude() + " º");
 
         calculo.put("longitud", location_gps.getLongitude());
-        Log.e("Longitud", location_gps.getLongitude() + " º");
 
         calculo.put("altitud", location_gps.getAltitude());
-        Log.e("Altitud", location_gps.getAltitude() + " m");
 
         calculo.put("velocidad", location_gps.getSpeed());
-        Log.e("Velocidad", location_gps.getSpeed() + " m/s");
 
         calculo.put("precision", location_gps.getAccuracy());
-        Log.e("Precisión", location_gps.getAccuracy() + " m");
 
         doc.put(key, calculo);
     }
@@ -321,7 +315,6 @@ public class SensorGPSFragment extends Fragment {
 
     private void UpdateDB() {
         locationManager.removeUpdates(locationListener);
-        Log.e("DOCResultsAEnviar1", String.valueOf(docIsRegister));
         for (Map.Entry entry : docIsRegister.entrySet()) {
             if ((doc.containsKey(entry.getKey().toString())) &&
                     (!entry.getKey().toString().equals("ubicacion_1") && !entry.getKey().toString().equals("ubicacion_2")) &&
@@ -348,8 +341,6 @@ public class SensorGPSFragment extends Fragment {
                 docIsRegister.put(entry.getKey().toString(), doc.get(entry.getKey().toString()));
             }
         }
-
-        Log.e("DOCResultsAEnviar2", String.valueOf(docIsRegister));
 
 
         if (isModificado) {

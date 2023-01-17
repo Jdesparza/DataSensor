@@ -301,41 +301,33 @@ public class SensorBarometroFragment extends Fragment implements SensorEventList
     }
 
     private void ValidarCheckBoxDatos() {
-        Log.i("Sensor", sensorBarometro.getName());
         doc.put("nombre", sensorBarometro.getName());
         if (cb_barometro_fabricante.isChecked()) {
             doc.put("fabricante", sensorBarometro.getVendor());
-            Log.e("Fabricante", String.valueOf(sensorBarometro.getVendor()));
         }
         if (cb_barometro_version.isChecked()) {
             doc.put("version", sensorBarometro.getVersion());
-            Log.e("Versión", String.valueOf(sensorBarometro.getVersion()));
         }
         if (cb_barometro_potencia.isChecked()) {
             doc.put("potencia", sensorBarometro.getPower());
-            Log.e("Potencia", sensorBarometro.getPower() + " mA");
         }
         if (cb_barometro_resolucion.isChecked()) {
             doc.put("resolucion", sensorBarometro.getResolution());
-            Log.e("Resolución", sensorBarometro.getResolution() + " hPa");
         }
         if (cb_barometro_max.isChecked()) {
             doc.put("rangoMax", sensorBarometro.getMaximumRange());
-            Log.e("Máx", sensorBarometro.getMaximumRange() + " hPa");
         }
         if (ctv_barometro_calculo_1.isChecked()) {
             HashMap<String, Serializable> presion_1 = new HashMap<String, Serializable>();
             presion_1.put("presion", presionEncontrada);
             presion_1.put("altitud", altitud);
             doc.put("presion_1", presion_1);
-            Log.e("presion_1", String.valueOf(presion_1));
         }
         if (ctv_barometro_calculo_2.isChecked()) {
             HashMap<String, Serializable> presion_2 = new HashMap<String, Serializable>();
             presion_2.put("presion", presionEncontrada);
             presion_2.put("altitud", altitud);
             doc.put("presion_2", presion_2);
-            Log.e("presion_2", String.valueOf(presion_2));
         }
     }
 
@@ -358,7 +350,6 @@ public class SensorBarometroFragment extends Fragment implements SensorEventList
     private void UpdateDB() {
         sensorManager.unregisterListener(SensorBarometroFragment.this);
 
-        Log.e("DOCResultsAEnviar1", String.valueOf(docIsRegister));
         for (Map.Entry entry : docIsRegister.entrySet()) {
             if ((doc.containsKey(entry.getKey().toString())) &&
                     (!entry.getKey().toString().equals("presion_1") && !entry.getKey().toString().equals("presion_2")) &&
@@ -385,8 +376,6 @@ public class SensorBarometroFragment extends Fragment implements SensorEventList
                 docIsRegister.put(entry.getKey().toString(), doc.get(entry.getKey().toString()));
             }
         }
-
-        Log.e("DOCResultsAEnviar2", String.valueOf(docIsRegister));
 
         if (isModificado) {
             documentReference.update(sensorDB, docIsRegister)

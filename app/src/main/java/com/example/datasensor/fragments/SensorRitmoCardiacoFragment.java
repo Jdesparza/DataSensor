@@ -445,35 +445,27 @@ public class SensorRitmoCardiacoFragment extends Fragment implements SensorEvent
     }
 
     private void ValidarCheckBoxDatos() {
-        Log.i("Sensor", sensorRitmoCardiaco.getName());
         doc.put("nombre", sensorRitmoCardiaco.getName());
         if (cb_ritmoCardiaco_fabricante.isChecked()) {
             doc.put("fabricante", sensorRitmoCardiaco.getVendor());
-            Log.e("Fabricante", String.valueOf(sensorRitmoCardiaco.getVendor()));
         }
         if (cb_ritmoCardiaco_version.isChecked()) {
             doc.put("version", sensorRitmoCardiaco.getVersion());
-            Log.e("Versión", String.valueOf(sensorRitmoCardiaco.getVersion()));
         }
         if (cb_ritmoCardiaco_potencia.isChecked()) {
             doc.put("potencia", sensorRitmoCardiaco.getPower());
-            Log.e("Potencia", sensorRitmoCardiaco.getPower() + " mA");
         }
         if (cb_ritmoCardiaco_resolucion.isChecked()) {
             doc.put("resolucion", sensorRitmoCardiaco.getResolution());
-            Log.e("Resolución", String.valueOf(sensorRitmoCardiaco.getResolution()));
         }
         if (cb_ritmoCardiaco_max.isChecked()) {
             doc.put("rangoMax", sensorRitmoCardiaco.getMaximumRange());
-            Log.e("Máx", String.valueOf(sensorRitmoCardiaco.getMaximumRange()));
         }
         if (ctv_ritmoCardiaco_calculo_1.isChecked()) {
             doc.put("calRitmoCardiaco_1", countRitmoCardiaco);
-            Log.e("calRitmoCardiaco_1", String.valueOf(countRitmoCardiaco));
         }
         if (ctv_ritmoCardiaco_calculo_2.isChecked()) {
             doc.put("calRitmoCardiaco_2", countRitmoCardiaco);
-            Log.e("calRitmoCardiaco_2", String.valueOf(countRitmoCardiaco));
         }
     }
 
@@ -494,7 +486,6 @@ public class SensorRitmoCardiacoFragment extends Fragment implements SensorEvent
     }
 
     private void UpdateDB() {
-        Log.e("DOCResultsAEnviar1", String.valueOf(docIsRegister));
         for (Map.Entry entry : docIsRegister.entrySet()) {
             if ((doc.containsKey(entry.getKey().toString())) &&
                     (!Objects.equals(docIsRegister.get(entry.getKey().toString()).toString(), doc.get(entry.getKey().toString()).toString()))) {
@@ -514,8 +505,6 @@ public class SensorRitmoCardiacoFragment extends Fragment implements SensorEvent
                 docIsRegister.put(entry.getKey().toString(), doc.get(entry.getKey().toString()));
             }
         }
-
-        Log.e("DOCResultsAEnviar2", String.valueOf(docIsRegister));
 
 
         if (isModificado) {

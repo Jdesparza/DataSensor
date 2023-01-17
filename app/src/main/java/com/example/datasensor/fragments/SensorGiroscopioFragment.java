@@ -303,27 +303,21 @@ public class SensorGiroscopioFragment extends Fragment implements SensorEventLis
     }
 
     private void ValidarCheckBoxDatos() {
-        Log.i("Sensor", sensorGiroscopio.getName());
         doc.put("nombre", sensorGiroscopio.getName());
         if (cb_giroscopio_fabricante.isChecked()) {
             doc.put("fabricante", sensorGiroscopio.getVendor());
-            Log.e("Fabricante", String.valueOf(sensorGiroscopio.getVendor()));
         }
         if (cb_giroscopio_version.isChecked()) {
             doc.put("version", sensorGiroscopio.getVersion());
-            Log.e("Versión", String.valueOf(sensorGiroscopio.getVersion()));
         }
         if (cb_giroscopio_potencia.isChecked()) {
             doc.put("potencia", sensorGiroscopio.getPower());
-            Log.e("Potencia", sensorGiroscopio.getPower() + " mA");
         }
         if (cb_giroscopio_resolucion.isChecked()) {
             doc.put("resolucion", sensorGiroscopio.getResolution());
-            Log.e("Resolución", sensorGiroscopio.getResolution() + " rad/s");
         }
         if (cb_giroscopio_max.isChecked()) {
             doc.put("rangoMax", sensorGiroscopio.getMaximumRange());
-            Log.e("Máx", sensorGiroscopio.getMaximumRange() + " rad/s");
         }
         if (ctv_giroscopio_calculo_1.isChecked()) {
             HashMap<String, Serializable> rotacion_1 = new HashMap<String, Serializable>();
@@ -360,7 +354,6 @@ public class SensorGiroscopioFragment extends Fragment implements SensorEventLis
     private void UpdateDB() {
         sensorManager.unregisterListener(SensorGiroscopioFragment.this);
 
-        Log.e("DOCResultsAEnviar1", String.valueOf(docIsRegister));
         for (Map.Entry entry : docIsRegister.entrySet()) {
             if ((doc.containsKey(entry.getKey().toString())) &&
                     (!entry.getKey().toString().equals("rotacion_1") && !entry.getKey().toString().equals("rotacion_2")) &&
@@ -388,8 +381,6 @@ public class SensorGiroscopioFragment extends Fragment implements SensorEventLis
                 docIsRegister.put(entry.getKey().toString(), doc.get(entry.getKey().toString()));
             }
         }
-
-        Log.e("DOCResultsAEnviar2", String.valueOf(docIsRegister));
 
         if (isModificado) {
             documentReference.update(sensorDB, docIsRegister)

@@ -155,7 +155,6 @@ public class SensoresFragment extends Fragment {
                     if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) &&
                             (ContextCompat.checkSelfPermission(context, Manifest.permission.ACTIVITY_RECOGNITION)
                                     != PackageManager.PERMISSION_GRANTED)) {
-                        Log.e("Permiso", "No hay permiso");
                         ActivityCompat.requestPermissions(getActivity(),
                                 new String[]{Manifest.permission.ACTIVITY_RECOGNITION},
                                 1);
@@ -165,7 +164,6 @@ public class SensoresFragment extends Fragment {
                 } else if (sensor_nombre.get(position) == "Ritmo Cardíaco") {
                     if ((ContextCompat.checkSelfPermission(context, Manifest.permission.BODY_SENSORS)
                                     != PackageManager.PERMISSION_GRANTED)) {
-                        Log.e("Permiso", "No hay permiso");
                         ActivityCompat.requestPermissions(getActivity(),
                                 new String[]{Manifest.permission.BODY_SENSORS},
                                 1);
@@ -175,7 +173,6 @@ public class SensoresFragment extends Fragment {
                 } else if (sensor_nombre.get(position) == "Cámara") {
                     if ((ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
                             != PackageManager.PERMISSION_GRANTED)) {
-                        Log.e("Permiso", "No hay permiso");
 
                         ActivityCompat.requestPermissions(getActivity(),
                                 new String[]{Manifest.permission.CAMERA},
@@ -188,7 +185,6 @@ public class SensoresFragment extends Fragment {
                 } else if (sensor_nombre.get(position).equals("GPS")) {
                     if ((ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                                     != PackageManager.PERMISSION_GRANTED)) {
-                        Log.e("Permiso", "No hay permiso");
 
                         ActivityCompat.requestPermissions(getActivity(),
                                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -199,7 +195,6 @@ public class SensoresFragment extends Fragment {
                 } else if (sensor_nombre.get(position).equals("Micrófono")) {
                     if ((ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO)
                             != PackageManager.PERMISSION_GRANTED)) {
-                        Log.e("Permiso", "No hay permiso");
 
                         ActivityCompat.requestPermissions(getActivity(),
                                 new String[]{Manifest.permission.RECORD_AUDIO},

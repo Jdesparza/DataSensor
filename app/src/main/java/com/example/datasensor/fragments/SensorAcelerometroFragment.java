@@ -301,27 +301,21 @@ public class SensorAcelerometroFragment extends Fragment implements SensorEventL
     }
 
     private void ValidarCheckBoxDatos() {
-        Log.i("Sensor", sensorAcelerometro.getName());
         doc.put("nombre", sensorAcelerometro.getName());
         if (cb_acelerometro_fabricante.isChecked()) {
             doc.put("fabricante", sensorAcelerometro.getVendor());
-            Log.e("Fabricante", String.valueOf(sensorAcelerometro.getVendor()));
         }
         if (cb_acelerometro_version.isChecked()) {
             doc.put("version", sensorAcelerometro.getVersion());
-            Log.e("Versión", String.valueOf(sensorAcelerometro.getVersion()));
         }
         if (cb_acelerometro_potencia.isChecked()) {
             doc.put("potencia", sensorAcelerometro.getPower());
-            Log.e("Potencia", sensorAcelerometro.getPower() + " mA");
         }
         if (cb_acelerometro_resolucion.isChecked()) {
             doc.put("resolucion", sensorAcelerometro.getResolution());
-            Log.e("Resolución", sensorAcelerometro.getResolution() + " m/s2");
         }
         if (cb_acelerometro_max.isChecked()) {
             doc.put("rangoMax", sensorAcelerometro.getMaximumRange());
-            Log.e("Máx", sensorAcelerometro.getMaximumRange() + " m/s2");
         }
         if (ctv_acelerometro_calculo_1.isChecked()) {
             HashMap<String, Serializable> aceleracion_1 = new HashMap<String, Serializable>();
@@ -358,7 +352,6 @@ public class SensorAcelerometroFragment extends Fragment implements SensorEventL
     private void UpdateDB() {
         sensorManager.unregisterListener(SensorAcelerometroFragment.this);
 
-        Log.e("DOCResultsAEnviar1", String.valueOf(docIsRegister));
         for (Map.Entry entry : docIsRegister.entrySet()) {
             if ((doc.containsKey(entry.getKey().toString())) &&
                     (!entry.getKey().toString().equals("aceleracion_1") && !entry.getKey().toString().equals("aceleracion_2")) &&
@@ -385,8 +378,6 @@ public class SensorAcelerometroFragment extends Fragment implements SensorEventL
                 docIsRegister.put(entry.getKey().toString(), doc.get(entry.getKey().toString()));
             }
         }
-
-        Log.e("DOCResultsAEnviar2", String.valueOf(docIsRegister));
 
         if (isModificado) {
             documentReference.update(sensorDB, docIsRegister)

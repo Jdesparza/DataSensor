@@ -291,35 +291,27 @@ public class SensorProximidadFragment extends Fragment implements SensorEventLis
     }
 
     private void ValidarCheckBoxDatos() {
-        Log.i("Sensor", sensorProximidad.getName());
         doc.put("nombre", sensorProximidad.getName());
         if (cb_proximidad_fabricante.isChecked()) {
             doc.put("fabricante", sensorProximidad.getVendor());
-            Log.e("Fabricante", String.valueOf(sensorProximidad.getVendor()));
         }
         if (cb_proximidad_version.isChecked()) {
             doc.put("version", sensorProximidad.getVersion());
-            Log.e("Versión", String.valueOf(sensorProximidad.getVersion()));
         }
         if (cb_proximidad_potencia.isChecked()) {
             doc.put("potencia", sensorProximidad.getPower());
-            Log.e("Potencia", sensorProximidad.getPower() + " mA");
         }
         if (cb_proximidad_resolucion.isChecked()) {
             doc.put("resolucion", sensorProximidad.getResolution());
-            Log.e("Resolución", sensorProximidad.getResolution() + " cm");
         }
         if (cb_proximidad_max.isChecked()) {
             doc.put("rangoMax", sensorProximidad.getMaximumRange());
-            Log.e("Máx", sensorProximidad.getMaximumRange() + " cm");
         }
         if (ctv_proximidad_calculo_1.isChecked()) {
             doc.put("proximidad_1", proximidadEncontrada);
-            Log.e("proximidad_1", String.valueOf(proximidadEncontrada));
         }
         if (ctv_proximidad_calculo_2.isChecked()) {
             doc.put("proximidad_2", proximidadEncontrada);
-            Log.e("proximidad_2", String.valueOf(proximidadEncontrada));
         }
     }
 
@@ -342,7 +334,6 @@ public class SensorProximidadFragment extends Fragment implements SensorEventLis
     private void UpdateDB() {
         sensorManager.unregisterListener(SensorProximidadFragment.this);
 
-        Log.e("DOCResultsAEnviar1", String.valueOf(docIsRegister));
         for (Map.Entry entry : docIsRegister.entrySet()) {
             if ((doc.containsKey(entry.getKey().toString())) &&
                     (!Objects.equals(docIsRegister.get(entry.getKey().toString()).toString(), doc.get(entry.getKey().toString()).toString()))) {
@@ -362,8 +353,6 @@ public class SensorProximidadFragment extends Fragment implements SensorEventLis
                 docIsRegister.put(entry.getKey().toString(), doc.get(entry.getKey().toString()));
             }
         }
-
-        Log.e("DOCResultsAEnviar2", String.valueOf(docIsRegister));
 
         if (isModificado) {
             documentReference.update(sensorDB, docIsRegister)

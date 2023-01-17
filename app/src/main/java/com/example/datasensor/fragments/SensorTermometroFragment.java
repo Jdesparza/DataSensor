@@ -297,35 +297,27 @@ public class SensorTermometroFragment extends Fragment implements SensorEventLis
     }
 
     private void ValidarCheckBoxDatos() {
-        Log.i("Sensor", sensorTermometro.getName());
         doc.put("nombre", sensorTermometro.getName());
         if (cb_termometro_fabricante.isChecked()) {
             doc.put("fabricante", sensorTermometro.getVendor());
-            Log.e("Fabricante", String.valueOf(sensorTermometro.getVendor()));
         }
         if (cb_termometro_version.isChecked()) {
             doc.put("version", sensorTermometro.getVersion());
-            Log.e("Versión", String.valueOf(sensorTermometro.getVersion()));
         }
         if (cb_termometro_potencia.isChecked()) {
             doc.put("potencia", sensorTermometro.getPower());
-            Log.e("Potencia", sensorTermometro.getPower() + " mA");
         }
         if (cb_termometro_resolucion.isChecked()) {
             doc.put("resolucion", sensorTermometro.getResolution());
-            Log.e("Resolución", sensorTermometro.getResolution() + " °C");
         }
         if (cb_termometro_max.isChecked()) {
             doc.put("rangoMax", sensorTermometro.getMaximumRange());
-            Log.e("Máx", sensorTermometro.getMaximumRange() + " °C");
         }
         if (ctv_termometro_calculo_1.isChecked()) {
             doc.put("temperatura_1", temperaturaEncontrada);
-            Log.e("temperatura_1", String.valueOf(temperaturaEncontrada));
         }
         if (ctv_termometro_calculo_2.isChecked()) {
             doc.put("temperatura_2", temperaturaEncontrada);
-            Log.e("temperatura_2", String.valueOf(temperaturaEncontrada));
         }
     }
 
@@ -348,7 +340,6 @@ public class SensorTermometroFragment extends Fragment implements SensorEventLis
     private void UpdateDB() {
         sensorManager.unregisterListener(SensorTermometroFragment.this);
 
-        Log.e("DOCResultsAEnviar1", String.valueOf(docIsRegister));
         for (Map.Entry entry : docIsRegister.entrySet()) {
             if ((doc.containsKey(entry.getKey().toString())) &&
                     (!entry.getKey().toString().equals("aceleracion_1") && !entry.getKey().toString().equals("aceleracion_2")) &&
@@ -375,8 +366,6 @@ public class SensorTermometroFragment extends Fragment implements SensorEventLis
                 docIsRegister.put(entry.getKey().toString(), doc.get(entry.getKey().toString()));
             }
         }
-
-        Log.e("DOCResultsAEnviar2", String.valueOf(docIsRegister));
 
         if (isModificado) {
             documentReference.update(sensorDB, docIsRegister)

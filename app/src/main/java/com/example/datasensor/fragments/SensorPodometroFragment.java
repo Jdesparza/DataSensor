@@ -430,35 +430,27 @@ public class SensorPodometroFragment extends Fragment implements SensorEventList
     }
 
     private void ValidarCheckBoxDatos() {
-        Log.i("Sensor", sensorPodometro.getName());
         doc.put("nombre", sensorPodometro.getName());
         if (cb_podometro_fabricante.isChecked()) {
             doc.put("fabricante", sensorPodometro.getVendor());
-            Log.e("Fabricante", String.valueOf(sensorPodometro.getVendor()));
         }
         if (cb_podometro_version.isChecked()) {
             doc.put("version", sensorPodometro.getVersion());
-            Log.e("Versión", String.valueOf(sensorPodometro.getVersion()));
         }
         if (cb_podometro_potencia.isChecked()) {
             doc.put("potencia", sensorPodometro.getPower());
-            Log.e("Potencia", sensorPodometro.getPower() + " mA");
         }
         if (cb_podometro_resolucion.isChecked()) {
             doc.put("resolucion", sensorPodometro.getResolution());
-            Log.e("Resolución", String.valueOf(sensorPodometro.getResolution()));
         }
         if (cb_podometro_max.isChecked()) {
             doc.put("rangoMax", sensorPodometro.getMaximumRange());
-            Log.e("Máx", String.valueOf(sensorPodometro.getMaximumRange()));
         }
         if (ctv_podometro_calculo_1.isChecked()) {
             doc.put("calPasos_10", countStep);
-            Log.e("calPasos_10", String.valueOf(countStep));
         }
         if (ctv_podometro_calculo_2.isChecked()) {
             doc.put("calPasos_15", countStep);
-            Log.e("calPasos_15", String.valueOf(countStep));
         }
     }
 
@@ -481,7 +473,6 @@ public class SensorPodometroFragment extends Fragment implements SensorEventList
     private void UpdateDB() {
         sensorManager.unregisterListener(SensorPodometroFragment.this);
 
-        Log.e("DOCResultsAEnviar1", String.valueOf(docIsRegister));
         for (Map.Entry entry : docIsRegister.entrySet()) {
             if ((doc.containsKey(entry.getKey().toString())) &&
                     (!Objects.equals(docIsRegister.get(entry.getKey().toString()).toString(), doc.get(entry.getKey().toString()).toString()))) {
@@ -501,9 +492,6 @@ public class SensorPodometroFragment extends Fragment implements SensorEventList
                 docIsRegister.put(entry.getKey().toString(), doc.get(entry.getKey().toString()));
             }
         }
-
-        Log.e("DOCResultsAEnviar2", String.valueOf(docIsRegister));
-
 
         if (isModificado) {
             documentReference.update(sensorDB, docIsRegister)
